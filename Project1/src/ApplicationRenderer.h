@@ -24,7 +24,7 @@
 #include <imgui_impl_opengl3.h>
 
 #include "EntityManager/EntityManager.h"
-
+#include "Animation/AnimationSystem.h"
 
 class ApplicationRenderer
 {
@@ -84,6 +84,8 @@ private:
 	 float scrollTime;
 
 	 bool firstMouse;
+	 bool playAnimation = false;
 
+	 unsigned long long m_FrameNumber = 0;
 };
 

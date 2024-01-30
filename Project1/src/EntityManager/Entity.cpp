@@ -1,10 +1,22 @@
 #include "Entity.h"
 #include "EntityManager.h"
 #include "../ImGui/EditorLayout.h"
+#include "../Animation/Animation.h"
+#include "../Animation/AnimationSystem.h"
+
 
 void Entity::InitializeEntity(Entity* entity)
 {
 	EntityManager::GetInstance().AddEntity(entity);
+}
+
+void Entity::InitializeAnimation()
+{
+	animation = new Animation();
+	animation->time = 0;
+	AnimationSystem::GetInstance().AddAnimationEntity(this);
+
+	AnimationSystem::GetInstance().AddAnimation(animation);
 }
 
 void Entity::Destroy()

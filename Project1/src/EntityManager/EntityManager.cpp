@@ -1,5 +1,5 @@
 #include "EntityManager.h"
-
+#include "../Animation/Animation.h"
 EntityManager& EntityManager::GetInstance()
 {
     // TODO: insert return statement here
@@ -85,6 +85,12 @@ void EntityManager::Update(float deltaTime)
             }
 
             item.second->Update(deltaTime);
+
+            if (item.second->animation!=nullptr)
+            {
+                item.second->animation->time = frameNumber;
+            }
+
         }
     }
     catch (const std::exception& e)
@@ -96,4 +102,9 @@ void EntityManager::Update(float deltaTime)
 void EntityManager::Destroy(Entity* entity)
 {
     entity->OnDestroy();
+}
+
+void EntityManager::SetDeltaFrame(float _frameNumber)
+{
+    frameNumber = _frameNumber;
 }

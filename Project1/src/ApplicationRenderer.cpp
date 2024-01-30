@@ -248,6 +248,24 @@ void ApplicationRenderer::Start()
    //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
    //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
+     
+
+
+#pragma region Animation StartUps
+     dir->entityID = "DirectionLight";
+     dir->InitializeAnimation();
+
+    // Animation* directionLightAnimation = dir->animation;
+
+     dir->animation->AddPositionKeyFrame(glm::vec3(5, 0, 0), 0);
+     dir->animation->AddPositionKeyFrame(glm::vec3(5, 2, 0), 1);
+     dir->animation->AddPositionKeyFrame(glm::vec3(5, 5, 0), 2);
+     dir->animation->AddPositionKeyFrame(glm::vec3(2, 5, 0), 3);
+
+     
+
+
+#pragma endregion
 
 }
 
@@ -367,10 +385,32 @@ void ApplicationRenderer::Render()
 void ApplicationRenderer::PostRender()
 {
    // glDisable(GL_BLEND);
-
  //   PhysicsEngine.UpdatePhysics(deltaTime);
+
+    m_FrameNumber++;
+    if (m_FrameNumber > 1000) m_FrameNumber = 0;
+    float val = (float)m_FrameNumber / 250.f;
+    EntityManager::GetInstance().SetDeltaFrame(val);
+
+    if (playAnimation)
+    {
+        AnimationSystem::GetInstance().Update();
+
+    }
 }
 
+void UpdateAnimationTimes(Entity* gameObject, float time)
+{
+    if (gameObject->animation != nullptr)
+    {
+        gameObject->animation->time = time;
+    }
+
+    //for (GameObject* childObject : gameObject->m_Children)
+    //{
+    //    UpdateAnimationTimes(childObject, time);
+    //}
+}
 void ApplicationRenderer::Clear()
 {
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
@@ -436,6 +476,10 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
          }
      
+         if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+         {
+             playAnimation = !playAnimation;
+         }
  }
 
  void ApplicationRenderer::MouseCallBack(GLFWwindow* window, double xposIn, double yposIn)
