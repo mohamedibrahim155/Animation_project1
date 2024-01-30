@@ -14,3 +14,13 @@ void Animation::AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType
 {
 	scaleKeyFrameList.push_back(ScaleKeyFrame(scale, time, easeType));
 }
+
+void Animation::SetAnimationState(const AnimationState& animationState)
+{
+	currentAnimationState = animationState;
+}
+
+AnimationState Animation::GetCurrentAnimationState()
+{
+	return currentAnimationState;
+}

@@ -70,7 +70,15 @@ struct EventKeyFrame
 	double time;
 };
 
-
+enum class AnimationState
+{
+	NONE = -1, 
+	START = 0,
+	PAUSE =1,
+	STOP = 2,
+	RESUME = 3,
+	COMPLETE = 4,
+};
 
 class Animation 
 {
@@ -80,9 +88,14 @@ public:
 	void AddRotationKeyFrame(const glm::vec3& rotaion, double time, EasingType easeType = EasingType::Linear);
 	void AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType easeType = EasingType::Linear);
 
+	void SetAnimationState(const AnimationState& animationState);
+	AnimationState GetCurrentAnimationState();
+
 	std::vector<PositionKeyFrame> positionKeyFrameList;
 	std::vector<RotationKeyFrame> rotationKeyFrameList;
 	std::vector<ScaleKeyFrame> scaleKeyFrameList;
+
+	AnimationState currentAnimationState = AnimationState::NONE;
 
 	double time;
 

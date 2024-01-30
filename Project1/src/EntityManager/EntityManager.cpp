@@ -68,8 +68,14 @@ void EntityManager::Update(float deltaTime)
     for (const std::string& id : destroyedEntityList)
     {
         listOfEntities[id] = nullptr;
-        delete listOfEntities[id];
 
+        if (listOfEntities[id]->animation!=nullptr)
+        {
+            listOfEntities[id]->animation = nullptr;
+            delete listOfEntities[id]->animation;
+        }
+        delete listOfEntities[id];
+        
         listOfEntities.erase(id);
     }
     destroyedEntityList.clear();
@@ -88,7 +94,7 @@ void EntityManager::Update(float deltaTime)
 
             if (item.second->animation!=nullptr)
             {
-                item.second->animation->time = frameNumber;
+              //  item.second->animation->time = frameNumber;
             }
 
         }
@@ -107,4 +113,5 @@ void EntityManager::Destroy(Entity* entity)
 void EntityManager::SetDeltaFrame(float _frameNumber)
 {
     frameNumber = _frameNumber;
+    std::cout << " FrameNumber : " << frameNumber << std::endl;
 }

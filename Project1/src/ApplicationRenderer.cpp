@@ -264,6 +264,16 @@ void ApplicationRenderer::Start()
 
      
 
+     Model* SecondModel = new Model(*Sphere);
+     render.AddModelAndShader(SecondModel, SolidColorShader);
+
+     SecondModel->entityID = "SecondModel";
+     SecondModel->InitializeAnimation();
+
+     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 0, 0), 0);
+     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 2, 0), 1, EasingType::sineEaseIn);
+     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 5, 0), 2, EasingType::sineEaseInOut);
+     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-2, 5, 0), 3, EasingType::sineEaseOut);
 
 #pragma endregion
 
@@ -386,15 +396,20 @@ void ApplicationRenderer::PostRender()
 {
    // glDisable(GL_BLEND);
  //   PhysicsEngine.UpdatePhysics(deltaTime);
+    timeElapsed += Time::GetInstance().deltaTime;
 
     m_FrameNumber++;
     if (m_FrameNumber > 1000) m_FrameNumber = 0;
     float val = (float)m_FrameNumber / 250.f;
+
+
     EntityManager::GetInstance().SetDeltaFrame(val);
+
+
 
     if (playAnimation)
     {
-        AnimationSystem::GetInstance().Update();
+        AnimationSystem::GetInstance().Update(Time::GetInstance().deltaTime);
 
     }
 }

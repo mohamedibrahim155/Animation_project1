@@ -87,5 +87,7 @@ private:
 	 bool playAnimation = false;
 
 	 unsigned long long m_FrameNumber = 0;
+
+	 double timeElapsed = 0;
 };
 

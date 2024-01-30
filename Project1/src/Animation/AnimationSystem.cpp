@@ -8,9 +8,10 @@ AnimationSystem& AnimationSystem::GetInstance()
 	return instance;
 }
 
-void AnimationSystem::Update()
+void AnimationSystem::Update(float deltaTime)
 {
 	if (isAnimationPause) return;
+
 
 	for (Entity* entity : listOfEntitiesToAnimate)
 	{
@@ -18,20 +19,30 @@ void AnimationSystem::Update()
 		{
 			Animation* animation = entity->animation;
 
+			animation->time += deltaTime;
+
+			if (animation->GetCurrentAnimationState() == AnimationState::COMPLETE)
+			{
+				// Replays the animation in a loop
+				animation->time = 0;
+				animation->SetAnimationState(AnimationState::NONE);
+			}
+			
 			double time = animation->time;
 
 
 			if (animation->positionKeyFrameList.size() == 1)
 			{
+				animation->SetAnimationState(AnimationState::NONE);
 				entity->transform.position = animation->positionKeyFrameList[0].position;
 			}
 			else
 			{
 				int keyFrameEndIndex = 0;
-
+				
 				for (; keyFrameEndIndex < animation->positionKeyFrameList.size(); keyFrameEndIndex++)
 				{
-					if (animation->positionKeyFrameList[keyFrameEndIndex].time >time)
+					if (animation->positionKeyFrameList[keyFrameEndIndex].time > time)
 					{
 						break;
 
@@ -40,6 +51,7 @@ void AnimationSystem::Update()
 
 				if (keyFrameEndIndex>= animation->positionKeyFrameList.size())
 				{
+					animation->SetAnimationState(AnimationState::COMPLETE);
 					entity->transform.position = animation->positionKeyFrameList[keyFrameEndIndex-1].position;
 
 					return;
@@ -74,7 +86,7 @@ void AnimationSystem::Update()
 
 				glm::vec3 delta = endKeyFrame.position - startKeyFrame.position;
 
-				entity->transform.position = (startKeyFrame.position + delta * result);
+				entity->transform.SetPosition(startKeyFrame.position + delta * result);
 
 
 
@@ -94,3 +106,23 @@ void AnimationSystem::AddAnimation(Animation* animation)
 {
 	animationSequenceList.push_back(animation);
 }
+
+void AnimationSystem::RewindAnimation()
+{
+	for (Animation* animation : animationSequenceList)
+	{
+		std::vector<PositionKeyFrame> positionKeyFrame = animation->positionKeyFrameList;
+
+		animation->positionKeyFrameList.clear();
+
+		for (int  i = positionKeyFrame.size()-1; i >= 0; i--)
+		{
+			PositionKeyFrame index = positionKeyFrame[i];
+			animation->AddPositionKeyFrame(index.position, index.time, index.easeType);
+		}
+
+
+
+	}
+}
+
