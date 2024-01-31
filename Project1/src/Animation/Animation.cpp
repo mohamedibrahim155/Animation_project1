@@ -15,6 +15,11 @@ void Animation::AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType
 	scaleKeyFrameList.push_back(ScaleKeyFrame(scale, time, easeType));
 }
 
+void Animation::AddColoreKeyFrame(const glm::vec3& color, double time, EasingType easeType)
+{
+	colorKeyFrameList.push_back(ColorKeyFrame(color, time, easeType));
+}
+
 void Animation::SetAnimationState(const AnimationState& animationState)
 {
 	currentAnimationState = animationState;

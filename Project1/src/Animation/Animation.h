@@ -61,6 +61,19 @@ struct ScaleKeyFrame
 
 };
 
+struct ColorKeyFrame
+{
+	ColorKeyFrame(const glm::vec3& _color, double _time, EasingType _easeType = EasingType::Linear) :
+		color(_color),
+		time(_time),
+		easeType(_easeType)
+	{}
+
+	glm::vec3 color;
+	EasingType easeType;
+	double time;
+};
+
 struct EventKeyFrame
 {
 	EventKeyFrame(double _time) : time(_time)	
@@ -80,6 +93,8 @@ enum class AnimationState
 	COMPLETE = 4,
 };
 
+
+
 class Animation 
 {
 public:
@@ -87,6 +102,7 @@ public:
 	void AddPositionKeyFrame(const glm::vec3& position, double time, EasingType easeType = EasingType::Linear);
 	void AddRotationKeyFrame(const glm::quat& rotaion, double time, EasingType easeType = EasingType::Linear);
 	void AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType easeType = EasingType::Linear);
+	void AddColoreKeyFrame(const glm::vec3& color, double time, EasingType easeType = EasingType::Linear);
 
 	void SetAnimationState(const AnimationState& animationState);
 	AnimationState GetCurrentAnimationState();
@@ -97,6 +113,7 @@ public:
 	std::vector<PositionKeyFrame> positionKeyFrameList;
 	std::vector<RotationKeyFrame> rotationKeyFrameList;
 	std::vector<ScaleKeyFrame> scaleKeyFrameList;
+	std::vector<ColorKeyFrame> colorKeyFrameList;
 
 	AnimationState currentAnimationState = AnimationState::NONE;
 

@@ -1,6 +1,6 @@
 #include "AnimationSystem.h"
 #include <glm/gtx/easing.hpp>
-
+#include "../model.h"
 
 AnimationSystem& AnimationSystem::GetInstance()
 {
@@ -53,7 +53,7 @@ void AnimationSystem::Update(float deltaTime)
 
 					if (keyFrameEndIndex >= animation->positionKeyFrameList.size())
 					{
-						animation->SetAnimationState(AnimationState::COMPLETE);
+						
 						entity->transform.position = animation->positionKeyFrameList[keyFrameEndIndex - 1].position;
 
 						return;
@@ -94,8 +94,10 @@ void AnimationSystem::Update(float deltaTime)
 			}
 
 
+           #pragma region Rotation
+
 			//Rotation
-			{
+			/*{
 				if (animation->rotationKeyFrameList.size() == 1)
 				{
 					animation->SetAnimationState(AnimationState::NONE);
@@ -116,7 +118,7 @@ void AnimationSystem::Update(float deltaTime)
 
 					if (keyFrameEndIndex >= animation->rotationKeyFrameList.size())
 					{
-						animation->SetAnimationState(AnimationState::COMPLETE);
+						
 						entity->transform.SetQuatRotation(animation->rotationKeyFrameList[keyFrameEndIndex - 1].rotation);
 
 						return;
@@ -152,11 +154,14 @@ void AnimationSystem::Update(float deltaTime)
 					entity->transform.SetQuatRotation(glm::slerp(startKeyFrame.rotation, endKeyFrame.rotation, result));
 
 				}
-			}
+			}*/
 
+           #pragma endregion
+
+           #pragma region Scale
 
 			//Scale
-			{
+			/*{
 				if (animation->scaleKeyFrameList.size() == 1)
 				{
 					animation->SetAnimationState(AnimationState::NONE);
@@ -177,9 +182,7 @@ void AnimationSystem::Update(float deltaTime)
 
 					if (keyFrameEndIndex >= animation->scaleKeyFrameList.size())
 					{
-						animation->SetAnimationState(AnimationState::COMPLETE);
 						entity->transform.SetScale(animation->scaleKeyFrameList[keyFrameEndIndex - 1].scale);
-
 						return;
 					}
 					int keyFrameStartIndex = keyFrameEndIndex - 1;
@@ -215,7 +218,85 @@ void AnimationSystem::Update(float deltaTime)
 					entity->transform.SetScale(startKeyFrame.scale + delta * result);
 					
 				}
+			}*/
+
+            #pragma endregion
+
+             #pragma region Color
+			{
+				if (animation->colorKeyFrameList.size() == 1)
+				{
+					animation->SetAnimationState(AnimationState::NONE);
+					if (Model* modelEntity = dynamic_cast<Model*>(entity))
+					{
+						modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+						(glm::vec4(animation->colorKeyFrameList[0].color,1));
+					}
+				}
+				else if (animation->colorKeyFrameList.size() > 1)
+				{
+					int keyFrameEndIndex = 0;
+
+					for (; keyFrameEndIndex < animation->colorKeyFrameList.size(); keyFrameEndIndex++)
+					{
+						if (animation->colorKeyFrameList[keyFrameEndIndex].time > time)
+						{
+							break;
+
+						}
+					}
+
+					if (keyFrameEndIndex >= animation->colorKeyFrameList.size())
+					{
+						if (Model* modelEntity = dynamic_cast<Model*>(entity))
+						{
+							modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+							(glm::vec4(animation->colorKeyFrameList[keyFrameEndIndex - 1].color, 1));
+						}
+					
+						return;
+					}
+					int keyFrameStartIndex = keyFrameEndIndex - 1;
+
+					ColorKeyFrame startKeyFrame = animation->colorKeyFrameList[keyFrameStartIndex];
+					ColorKeyFrame endKeyFrame = animation->colorKeyFrameList[keyFrameEndIndex];
+
+					float percent = (time - startKeyFrame.time) / (endKeyFrame.time - startKeyFrame.time);
+					float result = 0.0f;
+
+
+					switch (endKeyFrame.easeType)
+					{
+					case EasingType::Linear:
+						result = percent;
+						break;
+
+					case EasingType::sineEaseIn:
+						result = glm::sineEaseIn(percent);
+						break;
+
+					case EasingType::sineEaseOut:
+						result = glm::sineEaseOut(percent);
+						break;
+
+					case EasingType::sineEaseInOut:
+						result = glm::sineEaseInOut(percent);
+						break;
+					}
+
+					glm::vec3 delta = (endKeyFrame.color - startKeyFrame.color);
+
+
+					if (Model* modelEntity = dynamic_cast<Model*>(entity))
+					{
+						modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+						(glm::vec4(startKeyFrame.color + delta * result, 1));
+					}
+
+				}
 			}
+
+             #pragma endregion
 
 		}
 	}

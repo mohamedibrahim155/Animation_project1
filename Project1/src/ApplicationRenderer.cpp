@@ -262,7 +262,10 @@ void ApplicationRenderer::Start()
      dir->animation->AddPositionKeyFrame(glm::vec3(5, 5, 0), 2);
      dir->animation->AddPositionKeyFrame(glm::vec3(2, 5, 0), 3);
 
-     
+     dir->animation->AddColoreKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseIn);
+     dir->animation->AddColoreKeyFrame(glm::vec3(0, 1, 0), 1, EasingType::sineEaseInOut);
+     dir->animation->AddColoreKeyFrame(glm::vec3(0, 0, 1), 5, EasingType::sineEaseOut);
+
 
      Model* SecondModel = new Model(*plant);
      render.AddModelAndShader(SecondModel, defaultShader);
@@ -285,6 +288,17 @@ void ApplicationRenderer::Start()
 
   //   SecondModel->animation->AddScaleKeyFrame(glm::vec3(2.5f, 2.5f, 2.5f), 2, EasingType::sineEaseOut);
      SecondModel->animation->AddScaleKeyFrame(glm::vec3(15, 15,15), 5, EasingType::sineEaseOut);
+
+
+
+     SecondModel->animation->AddColoreKeyFrame(glm::vec3(1, 1,1), 0, EasingType::sineEaseOut);
+     SecondModel->animation->AddColoreKeyFrame(glm::vec3(0, 1,0), 1, EasingType::sineEaseOut);
+     SecondModel->animation->AddColoreKeyFrame(glm::vec3(0, 0,1), 1, EasingType::sineEaseOut);
+
+
+     
+
+
 
 #pragma endregion
 

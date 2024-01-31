@@ -4,6 +4,8 @@
 #include <vector>
 #include "Animation.h"
 
+
+class Model;
 class AnimationSystem
 {
 public :
