@@ -31,14 +31,14 @@ struct PositionKeyFrame
 
 struct RotationKeyFrame
 {
-	RotationKeyFrame(const glm::vec3& _rotation, double _time, EasingType _easeType = EasingType::Linear) :
+	RotationKeyFrame(const glm::quat& _rotation, double _time, EasingType _easeType = EasingType::Linear) :
 		rotation(_rotation),
 		time(_time),
 		easeType(_easeType)
 	{
 	}
 
-	glm::vec3 rotation;
+	glm::quat rotation;
 	EasingType easeType;
 	double time;
 
@@ -85,11 +85,14 @@ class Animation
 public:
 
 	void AddPositionKeyFrame(const glm::vec3& position, double time, EasingType easeType = EasingType::Linear);
-	void AddRotationKeyFrame(const glm::vec3& rotaion, double time, EasingType easeType = EasingType::Linear);
+	void AddRotationKeyFrame(const glm::quat& rotaion, double time, EasingType easeType = EasingType::Linear);
 	void AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType easeType = EasingType::Linear);
 
 	void SetAnimationState(const AnimationState& animationState);
 	AnimationState GetCurrentAnimationState();
+
+	double GetTotalAnimationTime();
+
 
 	std::vector<PositionKeyFrame> positionKeyFrameList;
 	std::vector<RotationKeyFrame> rotationKeyFrameList;

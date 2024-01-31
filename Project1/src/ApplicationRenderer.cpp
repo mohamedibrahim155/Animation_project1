@@ -225,11 +225,11 @@ void ApplicationRenderer::Start()
 
 
     // render.AddModelAndShader(Pokeball, defaultShader);
-     render.AddModelAndShader(plant, alphaCutoutShader);
-     render.AddModelAndShader(floor, defaultShader);
-     render.AddModelAndShader(floor2, defaultShader);
-     render.AddModelAndShader(floor3, defaultShader);
-     render.AddModelAndShader(floor4, alphaBlendShader);
+   // render.AddModelAndShader(plant, alphaCutoutShader);
+   // render.AddModelAndShader(floor, defaultShader);
+   // render.AddModelAndShader(floor2, defaultShader);
+   // render.AddModelAndShader(floor3, defaultShader);
+   // render.AddModelAndShader(floor4, alphaBlendShader);
   
 
 
@@ -264,8 +264,8 @@ void ApplicationRenderer::Start()
 
      
 
-     Model* SecondModel = new Model(*Sphere);
-     render.AddModelAndShader(SecondModel, SolidColorShader);
+     Model* SecondModel = new Model(*plant);
+     render.AddModelAndShader(SecondModel, defaultShader);
 
      SecondModel->entityID = "SecondModel";
      SecondModel->InitializeAnimation();
@@ -274,6 +274,17 @@ void ApplicationRenderer::Start()
      SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 2, 0), 1, EasingType::sineEaseIn);
      SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 5, 0), 2, EasingType::sineEaseInOut);
      SecondModel->animation->AddPositionKeyFrame(glm::vec3(-2, 5, 0), 3, EasingType::sineEaseOut);
+
+     SecondModel->animation->AddRotationKeyFrame(glm::quat(1.0f, 0.f, 0.f, 0.f), 0, EasingType::sineEaseOut);
+     SecondModel->animation->AddRotationKeyFrame(glm::quat(0.0f, 0.f, 1.0f, 0.f), 1, EasingType::sineEaseOut);
+     SecondModel->animation->AddRotationKeyFrame(glm::quat(0.0f, 1.0f, 0.0f, 0.f), 2, EasingType::sineEaseOut);
+     SecondModel->animation->AddRotationKeyFrame(glm::quat(0.0f, 0.0f, 1.0f, 0.f), 3, EasingType::sineEaseOut);
+
+     SecondModel->animation->AddScaleKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseOut);
+   //  SecondModel->animation->AddScaleKeyFrame(glm::vec3(1, 1.5f, 1), 1, EasingType::sineEaseOut);
+
+  //   SecondModel->animation->AddScaleKeyFrame(glm::vec3(2.5f, 2.5f, 2.5f), 2, EasingType::sineEaseOut);
+     SecondModel->animation->AddScaleKeyFrame(glm::vec3(15, 15,15), 5, EasingType::sineEaseOut);
 
 #pragma endregion
 
@@ -394,17 +405,11 @@ void ApplicationRenderer::Render()
 
 void ApplicationRenderer::PostRender()
 {
-   // glDisable(GL_BLEND);
- //   PhysicsEngine.UpdatePhysics(deltaTime);
-    timeElapsed += Time::GetInstance().deltaTime;
+
 
     m_FrameNumber++;
     if (m_FrameNumber > 1000) m_FrameNumber = 0;
     float val = (float)m_FrameNumber / 250.f;
-
-
-    EntityManager::GetInstance().SetDeltaFrame(val);
-
 
 
     if (playAnimation)
@@ -414,18 +419,7 @@ void ApplicationRenderer::PostRender()
     }
 }
 
-void UpdateAnimationTimes(Entity* gameObject, float time)
-{
-    if (gameObject->animation != nullptr)
-    {
-        gameObject->animation->time = time;
-    }
 
-    //for (GameObject* childObject : gameObject->m_Children)
-    //{
-    //    UpdateAnimationTimes(childObject, time);
-    //}
-}
 void ApplicationRenderer::Clear()
 {
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));

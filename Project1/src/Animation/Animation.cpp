@@ -5,7 +5,7 @@ void Animation::AddPositionKeyFrame(const glm::vec3& position, double time, Easi
 	positionKeyFrameList.push_back(PositionKeyFrame(position, time, easeType));
 }
 
-void Animation::AddRotationKeyFrame(const glm::vec3& rotation, double time, EasingType easeType)
+void Animation::AddRotationKeyFrame(const glm::quat& rotation, double time, EasingType easeType)
 {
 	rotationKeyFrameList.push_back(RotationKeyFrame(rotation, time, easeType));
 }
@@ -23,4 +23,10 @@ void Animation::SetAnimationState(const AnimationState& animationState)
 AnimationState Animation::GetCurrentAnimationState()
 {
 	return currentAnimationState;
+}
+
+double Animation::GetTotalAnimationTime()
+{
+
+	return 0.0;
 }

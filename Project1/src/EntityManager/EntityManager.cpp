@@ -92,11 +92,6 @@ void EntityManager::Update(float deltaTime)
 
             item.second->Update(deltaTime);
 
-            if (item.second->animation!=nullptr)
-            {
-              //  item.second->animation->time = frameNumber;
-            }
-
         }
     }
     catch (const std::exception& e)
@@ -110,8 +105,4 @@ void EntityManager::Destroy(Entity* entity)
     entity->OnDestroy();
 }
 
-void EntityManager::SetDeltaFrame(float _frameNumber)
-{
-    frameNumber = _frameNumber;
-    std::cout << " FrameNumber : " << frameNumber << std::endl;
-}
+
