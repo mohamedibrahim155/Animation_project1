@@ -1,5 +1,4 @@
 #include "AnimationSystem.h"
-#include <glm/gtx/easing.hpp>
 #include "../model.h"
 
 AnimationSystem& AnimationSystem::GetInstance()
@@ -94,7 +93,7 @@ void AnimationSystem::Update(float deltaTime)
 			}
 
 
-           #pragma region Rotation
+             #pragma region Rotation
 
 			//Rotation
 			/*{
@@ -158,7 +157,7 @@ void AnimationSystem::Update(float deltaTime)
 
            #pragma endregion
 
-           #pragma region Scale
+             #pragma region Scale
 
 			//Scale
 			/*{
@@ -223,84 +222,95 @@ void AnimationSystem::Update(float deltaTime)
             #pragma endregion
 
              #pragma region Color
-			{
-				if (animation->colorKeyFrameList.size() == 1)
-				{
-					animation->SetAnimationState(AnimationState::NONE);
-					if (Model* modelEntity = dynamic_cast<Model*>(entity))
-					{
-						modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
-						(glm::vec4(animation->colorKeyFrameList[0].color,1));
-					}
-				}
-				else if (animation->colorKeyFrameList.size() > 1)
-				{
-					int keyFrameEndIndex = 0;
+			//{
+			//	if (animation->colorKeyFrameList.size() == 1)
+			//	{
+			//		animation->SetAnimationState(AnimationState::NONE);
+			//		if (Model* modelEntity = dynamic_cast<Model*>(entity))
+			//		{
+			//			modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+			//			(glm::vec4(animation->colorKeyFrameList[0].color,1));
+			//		}
+			//	}
+			//	else if (animation->colorKeyFrameList.size() > 1)
+			//	{
+			//		int keyFrameEndIndex = 0;
 
-					for (; keyFrameEndIndex < animation->colorKeyFrameList.size(); keyFrameEndIndex++)
-					{
-						if (animation->colorKeyFrameList[keyFrameEndIndex].time > time)
-						{
-							break;
+			//		for (; keyFrameEndIndex < animation->colorKeyFrameList.size(); keyFrameEndIndex++)
+			//		{
+			//			if (animation->colorKeyFrameList[keyFrameEndIndex].time > time)
+			//			{
+			//				break;
 
-						}
-					}
+			//			}
+			//		}
 
-					if (keyFrameEndIndex >= animation->colorKeyFrameList.size())
-					{
-						if (Model* modelEntity = dynamic_cast<Model*>(entity))
-						{
-							modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
-							(glm::vec4(animation->colorKeyFrameList[keyFrameEndIndex - 1].color, 1));
-						}
-					
-						return;
-					}
-					int keyFrameStartIndex = keyFrameEndIndex - 1;
+			//		if (keyFrameEndIndex >= animation->colorKeyFrameList.size())
+			//		{
+			//			if (Model* modelEntity = dynamic_cast<Model*>(entity))
+			//			{
+			//				modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+			//				(glm::vec4(animation->colorKeyFrameList[keyFrameEndIndex - 1].color, 1));
+			//			}
+			//		
+			//			return;
+			//		}
+			//		int keyFrameStartIndex = keyFrameEndIndex - 1;
 
-					ColorKeyFrame startKeyFrame = animation->colorKeyFrameList[keyFrameStartIndex];
-					ColorKeyFrame endKeyFrame = animation->colorKeyFrameList[keyFrameEndIndex];
+			//		ColorKeyFrame startKeyFrame = animation->colorKeyFrameList[keyFrameStartIndex];
+			//		ColorKeyFrame endKeyFrame = animation->colorKeyFrameList[keyFrameEndIndex];
 
-					float percent = (time - startKeyFrame.time) / (endKeyFrame.time - startKeyFrame.time);
-					float result = 0.0f;
-
-
-					switch (endKeyFrame.easeType)
-					{
-					case EasingType::Linear:
-						result = percent;
-						break;
-
-					case EasingType::sineEaseIn:
-						result = glm::sineEaseIn(percent);
-						break;
-
-					case EasingType::sineEaseOut:
-						result = glm::sineEaseOut(percent);
-						break;
-
-					case EasingType::sineEaseInOut:
-						result = glm::sineEaseInOut(percent);
-						break;
-					}
-
-					glm::vec3 delta = (endKeyFrame.color - startKeyFrame.color);
+			//		float percent = (time - startKeyFrame.time) / (endKeyFrame.time - startKeyFrame.time);
+			//		float result = 0.0f;
 
 
-					if (Model* modelEntity = dynamic_cast<Model*>(entity))
-					{
-						modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
-						(glm::vec4(startKeyFrame.color + delta * result, 1));
-					}
+			//		switch (endKeyFrame.easeType)
+			//		{
+			//		case EasingType::Linear:
+			//			result = percent;
+			//			break;
 
-				}
-			}
+			//		case EasingType::sineEaseIn:
+			//			result = glm::sineEaseIn(percent);
+			//			break;
+
+			//		case EasingType::sineEaseOut:
+			//			result = glm::sineEaseOut(percent);
+			//			break;
+
+			//		case EasingType::sineEaseInOut:
+			//			result = glm::sineEaseInOut(percent);
+			//			break;
+			//		}
+
+			//		glm::vec3 delta = (endKeyFrame.color - startKeyFrame.color);
+
+
+			//		if (Model* modelEntity = dynamic_cast<Model*>(entity))
+			//		{
+			//			modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+			//			(glm::vec4(startKeyFrame.color + delta * result, 1));
+			//		}
+
+			//	}
+			//}
 
              #pragma endregion
 
 		}
 	}
 
+}
+
+void AnimationSystem::UpdateAnimationSequence(float deltaTime)
+{
+	if (isAnimationPause) return;
+
+	if (currentSequence == nullptr) return;
+
+	animationSystemTime = deltaTime * animationSpeed;
+
+	currentSequence->UpdateCurrentSequenceTime(animationSystemTime);
 }
 
 void AnimationSystem::AddAnimationEntity(Entity* entity)
@@ -311,12 +321,12 @@ void AnimationSystem::AddAnimationEntity(Entity* entity)
 
 void AnimationSystem::AddAnimation(Animation* animation)
 {
-	animationSequenceList.push_back(animation);
+	animationClipList.push_back(animation);
 }
 
 void AnimationSystem::RewindAnimation()
 {
-	for (Animation* animation : animationSequenceList)
+	for (Animation* animation : animationClipList)
 	{
 		std::vector<PositionKeyFrame> positionKeyFrame = animation->positionKeyFrameList;
 
@@ -331,5 +341,56 @@ void AnimationSystem::RewindAnimation()
 
 
 	}
+}
+
+void AnimationSystem::PlayOrPause()
+{
+	isAnimationPause = !isAnimationPause;
+}
+
+void AnimationSystem::AddAnimationSequence(AnimationSequence* animation)
+{
+	animationSequences.push_back(animation);
+}
+
+void AnimationSystem::RemoveAnimationSequence(AnimationSequence* animation)
+{
+	std::vector<AnimationSequence*>::iterator removeIterator = std::remove(animationSequences.begin(), animationSequences.end(), animation);
+
+	animationSequences.erase(removeIterator, animationSequences.end());
+}
+
+void AnimationSystem::SetSequence(AnimationSequence* sequence)
+{
+	currentSequence = sequence;
+
+	for (size_t i = 0; i < animationSequences.size(); i++)
+	{
+		if (animationSequences[i] == sequence)
+		{
+			currentSequenceIndex = i;
+			return;
+		}
+	}
+
+
+	animationSequences.push_back(sequence);
+
+	currentSequenceIndex = animationSequences.size() - 1;
+
+}
+
+void AnimationSystem::NextSequence()
+{
+	currentSequenceIndex++;
+
+	currentSequence->ResetTime();
+
+	if (currentSequenceIndex >= animationSequences.size());
+	{
+		currentSequenceIndex = 0;
+	}
+
+	SetSequence(animationSequences[currentSequenceIndex]);
 }
 

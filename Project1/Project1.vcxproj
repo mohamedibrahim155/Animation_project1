@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\Animation\AnimationObject.cpp" />
+    <ClCompile Include="src\Animation\AnimationSequence.cpp" />
     <ClCompile Include="src\Animation\AnimationSystem.cpp" />
     <ClCompile Include="src\Animation\Animation.cpp" />
     <ClCompile Include="src\ImGui\EditorLayout.cpp" />
@@ -186,6 +188,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Animation\AnimationObject.h" />
+    <ClInclude Include="src\Animation\AnimationSequence.h" />
     <ClInclude Include="src\Animation\AnimationSystem.h" />
     <ClInclude Include="src\Animation\Animation.h" />
     <ClInclude Include="src\ImGui\EditorLayout.h" />

@@ -297,6 +297,22 @@ void ApplicationRenderer::Start()
 
 
      
+     AnimationSequence* anim1 = new AnimationSequence();
+
+     anim1->AddAnimationClip(dir->animation, dir);
+   //  anim1->AddAnimationClip(dir->animation, dir);
+   //  anim1->AddAnimationClip(SecondModel->animation, SecondModel);
+     AnimationSequence* anim2 = new AnimationSequence();
+
+     anim2->AddAnimationClip(SecondModel->animation, SecondModel);
+
+   //  AnimationSystem::GetInstance().AddAnimationSequence(anim1);
+  //   AnimationSystem::GetInstance().AddAnimationSequence(anim2);
+     AnimationSystem::GetInstance().SetSequence(anim2);
+
+
+     std::cout << "Animation Time frame :: " << anim1->GetTotalTimeFrame();
+
 
 
 
@@ -426,11 +442,10 @@ void ApplicationRenderer::PostRender()
     float val = (float)m_FrameNumber / 250.f;
 
 
-    if (playAnimation)
-    {
-        AnimationSystem::GetInstance().Update(Time::GetInstance().deltaTime);
-
-    }
+   
+      //  AnimationSystem::GetInstance().Update(Time::GetInstance().deltaTime);
+        AnimationSystem::GetInstance().UpdateAnimationSequence(Time::GetInstance().deltaTime);
+   
 }
 
 
@@ -501,7 +516,11 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
      
          if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
          {
-             playAnimation = !playAnimation;
+             AnimationSystem::GetInstance().PlayOrPause();
+         }
+         if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().NextSequence();
          }
  }
 

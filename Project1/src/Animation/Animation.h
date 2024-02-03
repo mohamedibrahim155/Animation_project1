@@ -1,7 +1,9 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/easing.hpp>
 #include <vector>
+#include "../model.h"
 
 enum class EasingType
 {
@@ -95,7 +97,7 @@ enum class AnimationState
 
 
 
-class Animation 
+class Animation
 {
 public:
 
@@ -108,7 +110,7 @@ public:
 	AnimationState GetCurrentAnimationState();
 
 	double GetTotalAnimationTime();
-
+	void SetAnimationTime(float time);
 
 	std::vector<PositionKeyFrame> positionKeyFrameList;
 	std::vector<RotationKeyFrame> rotationKeyFrameList;
@@ -122,4 +124,8 @@ public:
 	bool isPaused = false;
 
 };
+
+
+
+
 

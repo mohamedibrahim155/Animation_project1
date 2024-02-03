@@ -35,3 +35,8 @@ double Animation::GetTotalAnimationTime()
 
 	return 0.0;
 }
+
+void Animation::SetAnimationTime(float time)
+{
+	this->time = time;
+}
