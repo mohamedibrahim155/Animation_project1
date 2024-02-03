@@ -11,34 +11,28 @@ public :
 
 	static AnimationSystem& GetInstance();
 
-	void Update(float deltaTime);
 	void UpdateAnimationSequence(float deltaTime);
-
-	void AddAnimationEntity(Entity* entity);
-	void AddAnimation(Animation* animation);
-
-	void RewindAnimation();
-	void PlayOrPause();
-
-	std::vector<Entity*> listOfEntitiesToAnimate;
-	std::vector<Animation*> animationClipList;
-
+	void ToggleRewind();
+	void TogglePlayOrPause();
 	void AddAnimationSequence(AnimationSequence* animation);
 	void RemoveAnimationSequence(AnimationSequence* animation);
 	void SetSequence(AnimationSequence* sequence);
 	void SetAnimationSpeed(int speed);
-
 	void NextSequence();
 
 	AnimationSequence* currentSequence = nullptr;
-	int currentSequenceIndex = 0;
+
+private:
 
 	std::vector<AnimationSequence*> animationSequences;
 
-	bool isAnimationPause = true;
+	int currentSequenceIndex = 0;
 
 	float animationSystemTime = 0;
 	float animationSpeed = 1;
+
+	bool isAnimationPlaying = false;
+	bool isRewind = false;
 
 };
 

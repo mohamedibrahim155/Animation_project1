@@ -69,11 +69,6 @@ void EntityManager::Update(float deltaTime)
     {
         listOfEntities[id] = nullptr;
 
-        if (listOfEntities[id]->animation!=nullptr)
-        {
-            listOfEntities[id]->animation = nullptr;
-            delete listOfEntities[id]->animation;
-        }
         delete listOfEntities[id];
         
         listOfEntities.erase(id);

@@ -10,15 +10,6 @@ void Entity::InitializeEntity(Entity* entity)
 	EntityManager::GetInstance().AddEntity(entity);
 }
 
-void Entity::InitializeAnimation()
-{
-	animation = new Animation();
-	animation->time = 0;
-	AnimationSystem::GetInstance().AddAnimationEntity(this);
-
-	AnimationSystem::GetInstance().AddAnimation(animation);
-}
-
 void Entity::Destroy()
 {
 	EntityManager::GetInstance().RemoveEntity(entityID);

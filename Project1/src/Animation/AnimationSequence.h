@@ -16,33 +16,31 @@ class AnimationSequence
 
 public:
 	AnimationSequence();
+	~AnimationSequence();
 
 	void AddAnimationClip(Animation* animationClip, Model*  model);
 	void RemoveAnimationClip(Animation* animationClip);
 
 	void SetAnimationSequenceTime(float time);
-
-	void CalculateSequenceTotalTime(Model* model);
-
+	void CalculateSequenceTotalTime(Animation* animation);
 	void UpdateCurrentSequenceTime(float deltaTime);
 
-	float GetTotalTimeFrame();
-	std::vector<Animation*> GetAnimationList();
-
-
-
 	void SetCurrentAnimation(int index);
-
-	void SetCurrentAnimation(Animation* animation);
+	void SetModeState(const Mode& sequenceMode);
 
 	void ResetTime();
+	void SetVisibilityRenderers(bool isActive);
+
+	float GetTotalTimeFrame();
 
 	Mode SequenceMode = Mode::NORMAL;
 
 private:
-	std::map<Model*,Animation*> animationClipsWithObjectsList;
-	float sequenceTotalTime = 0;
 
+	std::map<Model*,Animation*> animationClipsWithObjectsList;
+	std::map<Model*, Animation*>::iterator clipsIterator;
+
+	float sequenceTotalTime = 0;
 	float sequenceDeltaTime = 0;
 
 	int currentIndex = 0;

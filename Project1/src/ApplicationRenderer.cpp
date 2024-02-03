@@ -253,65 +253,63 @@ void ApplicationRenderer::Start()
 
 #pragma region Animation StartUps
      dir->entityID = "DirectionLight";
-     dir->InitializeAnimation();
 
     // Animation* directionLightAnimation = dir->animation;
 
-     dir->animation->AddPositionKeyFrame(glm::vec3(5, 0, 0), 0);
-     dir->animation->AddPositionKeyFrame(glm::vec3(5, 2, 0), 1);
-     dir->animation->AddPositionKeyFrame(glm::vec3(5, 5, 0), 2);
-     dir->animation->AddPositionKeyFrame(glm::vec3(2, 5, 0), 3);
+     Animation* DirectionAnimation = new Animation();
+     DirectionAnimation->AddPositionKeyFrame(glm::vec3(5, 0, 0), 0);
+     DirectionAnimation->AddPositionKeyFrame(glm::vec3(5, 2, 0), 1);
+     DirectionAnimation->AddPositionKeyFrame(glm::vec3(5, 5, 0), 2);
+     DirectionAnimation->AddPositionKeyFrame(glm::vec3(2, 5, 0), 3);
 
-     dir->animation->AddColoreKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseIn);
-     dir->animation->AddColoreKeyFrame(glm::vec3(0, 1, 0), 1, EasingType::sineEaseInOut);
-     dir->animation->AddColoreKeyFrame(glm::vec3(0, 0, 1), 5, EasingType::sineEaseOut);
+     DirectionAnimation->AddColoreKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseIn);
+     DirectionAnimation->AddColoreKeyFrame(glm::vec3(0, 1, 0), 1, EasingType::sineEaseInOut);
+     DirectionAnimation->AddColoreKeyFrame(glm::vec3(0, 0, 1), 5, EasingType::sineEaseOut);
 
 
      Model* SecondModel = new Model(*plant);
      render.AddModelAndShader(SecondModel, defaultShader);
 
      SecondModel->entityID = "SecondModel";
-     SecondModel->InitializeAnimation();
 
-     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 0, 0), 0);
-     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 2, 0), 1, EasingType::sineEaseIn);
-     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-5, 5, 0), 2, EasingType::sineEaseInOut);
-     SecondModel->animation->AddPositionKeyFrame(glm::vec3(-2, 5, 0), 3, EasingType::sineEaseOut);
+     Animation* secondModelAnimation = new Animation();
 
-     SecondModel->animation->AddRotationKeyFrame(glm::quat(1.0f, 0.f, 0.f, 0.f), 0, EasingType::sineEaseOut);
-     SecondModel->animation->AddRotationKeyFrame(glm::quat(0.0f, 0.f, 1.0f, 0.f), 1, EasingType::sineEaseOut);
-     SecondModel->animation->AddRotationKeyFrame(glm::quat(0.0f, 1.0f, 0.0f, 0.f), 2, EasingType::sineEaseOut);
-     SecondModel->animation->AddRotationKeyFrame(glm::quat(0.0f, 0.0f, 1.0f, 0.f), 3, EasingType::sineEaseOut);
+     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-5, 0, 0), 0);
+     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-5, 2, 0), 1, EasingType::sineEaseIn);
+     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-5, 5, 0), 2, EasingType::sineEaseInOut);
+     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-2, 5, 0), 3, EasingType::sineEaseOut);
 
-     SecondModel->animation->AddScaleKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseOut);
+     secondModelAnimation->AddRotationKeyFrame(glm::quat(1.0f, 0.f, 0.f, 0.f), 0, EasingType::sineEaseOut);
+     secondModelAnimation->AddRotationKeyFrame(glm::quat(0.0f, 0.f, 1.0f, 0.f), 1, EasingType::sineEaseOut);
+     secondModelAnimation->AddRotationKeyFrame(glm::quat(0.0f, 1.0f, 0.0f, 0.f), 2, EasingType::sineEaseOut);
+     secondModelAnimation->AddRotationKeyFrame(glm::quat(0.0f, 0.0f, 1.0f, 0.f), 3, EasingType::sineEaseOut);
+
+     secondModelAnimation->AddScaleKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseOut);
    //  SecondModel->animation->AddScaleKeyFrame(glm::vec3(1, 1.5f, 1), 1, EasingType::sineEaseOut);
 
   //   SecondModel->animation->AddScaleKeyFrame(glm::vec3(2.5f, 2.5f, 2.5f), 2, EasingType::sineEaseOut);
-     SecondModel->animation->AddScaleKeyFrame(glm::vec3(15, 15,15), 5, EasingType::sineEaseOut);
+     secondModelAnimation->AddScaleKeyFrame(glm::vec3(15, 15,15), 5, EasingType::sineEaseOut);
 
 
 
-     SecondModel->animation->AddColoreKeyFrame(glm::vec3(1, 1,1), 0, EasingType::sineEaseOut);
-     SecondModel->animation->AddColoreKeyFrame(glm::vec3(0, 1,0), 1, EasingType::sineEaseOut);
-     SecondModel->animation->AddColoreKeyFrame(glm::vec3(0, 0,1), 1, EasingType::sineEaseOut);
+     secondModelAnimation->AddColoreKeyFrame(glm::vec3(1, 1,1), 0, EasingType::sineEaseOut);
+     secondModelAnimation->AddColoreKeyFrame(glm::vec3(0, 1,0), 1, EasingType::sineEaseOut);
+     secondModelAnimation->AddColoreKeyFrame(glm::vec3(0, 0,1), 1, EasingType::sineEaseOut);
 
 
      
      AnimationSequence* anim1 = new AnimationSequence();
 
-     anim1->AddAnimationClip(dir->animation, dir);
+     anim1->AddAnimationClip(DirectionAnimation, dir);
    //  anim1->AddAnimationClip(dir->animation, dir);
    //  anim1->AddAnimationClip(SecondModel->animation, SecondModel);
-     AnimationSequence* anim2 = new AnimationSequence();
+ //    AnimationSequence* anim2 = new AnimationSequence();
 
-     anim2->AddAnimationClip(SecondModel->animation, SecondModel);
+     anim1->AddAnimationClip(secondModelAnimation, SecondModel);
 
    //  AnimationSystem::GetInstance().AddAnimationSequence(anim1);
   //   AnimationSystem::GetInstance().AddAnimationSequence(anim2);
-     AnimationSystem::GetInstance().SetSequence(anim2);
-
-
-     std::cout << "Animation Time frame :: " << anim1->GetTotalTimeFrame();
+     AnimationSystem::GetInstance().SetSequence(anim1);
 
 
 
@@ -516,7 +514,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
      
          if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
          {
-             AnimationSystem::GetInstance().PlayOrPause();
+             AnimationSystem::GetInstance().TogglePlayOrPause();
          }
          if (key == GLFW_KEY_1 && action == GLFW_PRESS)
          {
@@ -540,6 +538,12 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          if (key == GLFW_KEY_5 && action == GLFW_PRESS)
          {
              AnimationSystem::GetInstance().SetAnimationSpeed(5);
+
+         }
+
+         if (key == GLFW_KEY_R && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().ToggleRewind();
 
          }
 

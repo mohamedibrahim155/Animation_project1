@@ -18,14 +18,12 @@ public:
 
 	Transform transform;
 
-	Animation* animation = nullptr;
 
 	bool isStartInvoked = false;
 
 	virtual ~Entity() {};
 
 	virtual void InitializeEntity(Entity* entity);
-	virtual void InitializeAnimation();
 	virtual void Start() = 0;
 	virtual void Update(float deltaTime) = 0;
 	virtual void OnDestroy() = 0;
