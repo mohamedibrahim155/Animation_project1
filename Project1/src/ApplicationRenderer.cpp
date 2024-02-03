@@ -520,7 +520,33 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          }
          if (key == GLFW_KEY_1 && action == GLFW_PRESS)
          {
+             AnimationSystem::GetInstance().SetAnimationSpeed(1);
+         }
+         if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().SetAnimationSpeed(2);
+
+         }
+         if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().SetAnimationSpeed(3);
+
+         }
+         if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().SetAnimationSpeed(4);
+
+         }
+         if (key == GLFW_KEY_5 && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().SetAnimationSpeed(5);
+
+         }
+
+         if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+         {
              AnimationSystem::GetInstance().NextSequence();
+
          }
  }
 

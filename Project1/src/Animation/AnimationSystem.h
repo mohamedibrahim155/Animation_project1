@@ -26,6 +26,7 @@ public :
 	void AddAnimationSequence(AnimationSequence* animation);
 	void RemoveAnimationSequence(AnimationSequence* animation);
 	void SetSequence(AnimationSequence* sequence);
+	void SetAnimationSpeed(int speed);
 
 	void NextSequence();
 
