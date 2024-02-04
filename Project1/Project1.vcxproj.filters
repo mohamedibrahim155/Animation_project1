@@ -322,5 +322,7 @@
     <None Include="Shaders\Light_FragmentShader2.frag" />
     <None Include="Shaders\DefaultShader_Fragment.frag" />
     <None Include="Shaders\DefaultShader_Vertex.vert" />
+    <None Include="Shaders\SolidColor_Fragment.frag" />
+    <None Include="Shaders\SolidColor_Vertex.vert" />
   </ItemGroup>
 </Project>

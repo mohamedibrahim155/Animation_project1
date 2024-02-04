@@ -138,6 +138,7 @@ void ApplicationRenderer::Start()
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
 
      Model* dir = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply",false);
+     dir->isVisible = false;
      dir->transform.SetScale(glm::vec3(0.5f));
 
 
@@ -428,9 +429,13 @@ void ApplicationRenderer::AnimationScene()
 
 #pragma endregion
 
-#pragma region Sequence 2
+    #pragma region Sequence 2
 
-#pragma endregion
+
+
+
+
+
 
 
 
@@ -532,6 +537,15 @@ void ApplicationRenderer::AnimationScene()
      sequence2->AddAnimationClip(clip6, explosion);
 
     // AnimationSystem::GetInstance().SetSequence(sequence2);
+#pragma endregion
+
+
+    #pragma region Sequence 3
+
+#pragma endregion
+
+
+
 #pragma endregion
 }
 
