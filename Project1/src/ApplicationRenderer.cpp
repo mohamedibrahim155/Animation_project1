@@ -339,7 +339,7 @@ void ApplicationRenderer::AnimationScene()
 #pragma region Animation StartUps
 
 
-#pragma region Sequence1
+    #pragma region Sequence1
 
 
     Model* SpaceShip = new Model("Models/SpaceShip/SpaceShip.ply");
@@ -389,11 +389,11 @@ void ApplicationRenderer::AnimationScene()
     clip2->AddPositionKeyFrame(glm::vec3(-15, 0, 0), 5);
     clip2->AddPositionKeyFrame(glm::vec3(-50, 0, 0), 6);
 
-    clip2->AddRotationKeyFrame(glm::vec3(0, 0,0 ), 0);
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,0 ), 0, EasingType::sineEaseIn);
     clip2->AddRotationKeyFrame(glm::vec3(0, 0,90), 2);
     clip2->AddRotationKeyFrame(glm::vec3(0, 0,180), 3);
     clip2->AddRotationKeyFrame(glm::vec3(0, 0,270), 5);
-    clip2->AddRotationKeyFrame(glm::vec3(0, 0,360), 6);
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,360), 6, EasingType::sineEaseOut);
 
 
     Model* asteroidGroups = new Model("Models/Asteroids/AsteroidGroup.ply");
@@ -419,11 +419,6 @@ void ApplicationRenderer::AnimationScene()
     clip3->AddColoreKeyFrame(glm::vec3(1, 1, 0), 0);
 
 
-
-
-#pragma endregion
-
-
     AnimationSequence* sequence1 = new AnimationSequence();
     sequence1->AddAnimationClip(clip1, SpaceShip);
     sequence1->AddAnimationClip(clip2, asteroid);
@@ -431,9 +426,112 @@ void ApplicationRenderer::AnimationScene()
 
     AnimationSystem::GetInstance().SetSequence(sequence1);
 
+#pragma endregion
+
+#pragma region Sequence 2
+
+#pragma endregion
 
 
 
+    Model* fighterJet = new Model();
+    fighterJet->LoadModel("Models/FighterJet/FighterJet.ply",false);
+
+    fighterJet->name = "FIGHTERJET";
+    fighterJet->entityID = "FIGHTER_JET_1";
+
+    fighterJet->transform.SetPosition(glm::vec3(0, 12, 0));
+    fighterJet->transform.SetScale(glm::vec3(0.025f));
+
+    render.AddModelAndShader(fighterJet, SolidColorShader);
+
+    Model* asteroid2 = new Model(*asteroid);
+
+    asteroid2->name = "ASTEROID";
+    asteroid2->entityID = "ASTEROID_2";
+
+    asteroid2->transform.SetPosition(glm::vec3(0, 0, -35));
+    asteroid2->transform.SetScale(glm::vec3(0.018f));
+
+    render.AddModelAndShader(asteroid2, defaultShader);
+
+
+    Animation* clip4 = new Animation();
+     clip4->AddPositionKeyFrame(glm::vec3(0, 0, -35), 0,EasingType::sineEaseInOut);
+     clip4->AddPositionKeyFrame(glm::vec3(0, 0, 20), 5, EasingType::sineEaseInOut);
+
+     clip4->AddRotationKeyFrame(glm::vec3(0, 0,0 ), 0, EasingType::sineEaseInOut);
+     clip4->AddRotationKeyFrame(glm::vec3(0, 0,90), 2);
+     clip4->AddRotationKeyFrame(glm::vec3(360, 0,180), 3);
+     clip4->AddRotationKeyFrame(glm::vec3(0, 0,270), 5);
+     clip4->AddRotationKeyFrame(glm::vec3(360, 0,360), 6, EasingType::sineEaseInOut);
+
+     clip4->AddColoreKeyFrame(glm::vec3(0, 1, 0), 0);
+
+
+
+     Animation* clip5 = new Animation();
+
+     clip5->AddPositionKeyFrame(glm::vec3(0, 10, 0), 0, EasingType::sineEaseInOut);
+     clip5->AddPositionKeyFrame(glm::vec3(0, 7, 0), 2);
+     clip5->AddPositionKeyFrame(glm::vec3(0, 3, 0), 4);
+     clip5->AddPositionKeyFrame(glm::vec3(0, 2, 0), 5, EasingType::sineEaseInOut);
+
+     clip5->AddRotationKeyFrame(glm::vec3(0, 0, 0), 0, EasingType::sineEaseIn);
+     clip5->AddRotationKeyFrame(glm::vec3(0, 0, 0), 0, EasingType::sineEaseIn);
+     clip5->AddRotationKeyFrame(glm::vec3(5, 2, 0), 0, EasingType::sineEaseIn);
+     clip5->AddRotationKeyFrame(glm::vec3(-20, 5, 0), 5, EasingType::sineEaseInOut);
+
+     clip5->AddScaleKeyFrame(glm::vec3(0.018f), 0, EasingType::sineEaseIn);
+     clip5->AddScaleKeyFrame(glm::vec3(0.018f), 2, EasingType::sineEaseIn);
+     clip5->AddScaleKeyFrame(glm::vec3(0.018f), 3, EasingType::sineEaseInOut);
+     clip5->AddScaleKeyFrame(glm::vec3(0), 3.1, EasingType::sineEaseInOut);
+     clip5->AddScaleKeyFrame(glm::vec3(0), 5, EasingType::sineEaseInOut);
+     
+
+
+     clip5->AddColoreKeyFrame(glm::vec3(0,1,0), 0, EasingType::sineEaseInOut);
+     clip5->AddColoreKeyFrame(glm::vec3(1,1,1), 2);
+     clip5->AddColoreKeyFrame(glm::vec3(1,1,1), 4);
+     clip5->AddColoreKeyFrame(glm::vec3(0,1,0), 5, EasingType::sineEaseInOut);
+
+
+     Model* explosion = new Model();
+     
+     explosion->LoadModel("Models/DefaultSphere/Sphere_1_unit_Radius.ply", false);
+
+     explosion->name = "EXLPOSION";
+     explosion->entityID = "EXPLOSION_1";
+
+     explosion->transform.SetPosition(glm::vec3(0, 5, 0));
+     explosion->transform.SetScale(glm::vec3(0));
+
+     render.AddModelAndShader(explosion, SolidColorShader);
+
+
+     Animation* clip6 = new Animation();
+
+     clip6->AddScaleKeyFrame(glm::vec3(0), 0);
+     clip6->AddScaleKeyFrame(glm::vec3(0), 1);
+     clip6->AddScaleKeyFrame(glm::vec3(0), 2);
+     clip6->AddScaleKeyFrame(glm::vec3(0), 3);
+     clip6->AddScaleKeyFrame(glm::vec3(5), 4);
+     clip6->AddScaleKeyFrame(glm::vec3(3), 4.1);
+     clip6->AddScaleKeyFrame(glm::vec3(2), 4.5);
+     clip6->AddScaleKeyFrame(glm::vec3(0), 5);
+
+     clip6->AddColoreKeyFrame(glm::vec3(1,0.5f,0), 0, EasingType::sineEaseInOut);
+     clip6->AddColoreKeyFrame(glm::vec3(1,0.5f,0), 2);
+     clip6->AddColoreKeyFrame(glm::vec3(1,0.5f,0), 4);
+     clip6->AddColoreKeyFrame(glm::vec3(1,0.5f,0), 5, EasingType::sineEaseInOut);
+
+     AnimationSequence* sequence2 = new AnimationSequence();
+
+     sequence2->AddAnimationClip(clip4, asteroid2);
+     sequence2->AddAnimationClip(clip5, fighterJet);
+     sequence2->AddAnimationClip(clip6, explosion);
+
+    // AnimationSystem::GetInstance().SetSequence(sequence2);
 #pragma endregion
 }
 

@@ -446,8 +446,17 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 
 					if (Model* modelEntity = dynamic_cast<Model*>(entity))
 					{
-						modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
-						(glm::vec4(startKeyFrame.color + delta * result, 1));
+						if (Material* material = dynamic_cast<Material*>(modelEntity->meshes[0]->meshMaterial))
+						{
+							modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
+							(glm::vec4(startKeyFrame.color + delta * result, 1));
+						}
+						else
+						{
+							modelEntity->meshes[0]->meshMaterial->unLitMaterial()->SetBaseColor
+							(glm::vec4(startKeyFrame.color + delta * result, 1));
+						}
+						
 					}
 
 				}

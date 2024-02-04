@@ -251,6 +251,8 @@
     <None Include="Shaders\Shader.vert" />
     <None Include="Shaders\SkyboxShader.frag" />
     <None Include="Shaders\SkyboxShader.vert" />
+    <None Include="Shaders\SolidColor_Fragment.frag" />
+    <None Include="Shaders\SolidColor_Vertex.vert" />
     <None Include="Shaders\StencilOutline.frag" />
     <None Include="Shaders\StencilOutline.vert" />
     <None Include="Source.frag" />
