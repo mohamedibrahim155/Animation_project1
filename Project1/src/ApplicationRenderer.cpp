@@ -542,7 +542,83 @@ void ApplicationRenderer::AnimationScene()
 
     #pragma region Sequence 3
 
-#pragma endregion
+   
+
+     SpaceShip->transform.SetPosition(glm::vec3(-15, 0, 0));
+     SpaceShip->transform.SetScale(glm::vec3(0.02f));
+
+
+     Animation* clip7 = new Animation();
+
+     clip7->AddPositionKeyFrame(glm::vec3(20, 0, 0), 0);
+     clip7->AddPositionKeyFrame(glm::vec3(-15, 0, 0), 2);
+     clip7->AddPositionKeyFrame(glm::vec3(-30, 0, 0), 4);
+
+
+     clip7->AddRotationKeyFrame(glm::vec3(0, -180, 0), 0);
+     clip7->AddRotationKeyFrame(glm::vec3(0, -180, 0), 2);
+     clip7->AddRotationKeyFrame(glm::vec3(0, -180, 0), 3);
+     clip7->AddRotationKeyFrame(glm::vec3(0, -180, 0), 4);
+
+
+     Animation* clip8 = new Animation();
+
+     clip8->AddPositionKeyFrame(glm::vec3(20, 0, 0),0,EasingType::sineEaseOut);
+     clip8->AddPositionKeyFrame(glm::vec3(20, 0, 0),1);
+     clip8->AddPositionKeyFrame(glm::vec3(-15, 0, 0),4, EasingType::sineEaseOut);
+
+
+     clip8->AddRotationKeyFrame(glm::vec3(0, -90, 0), 0);
+     clip8->AddRotationKeyFrame(glm::vec3(0, -90, 0), 1);
+    // clip8->AddRotationKeyFrame(glm::vec3(0, -90, -90), 1);
+     clip8->AddRotationKeyFrame(glm::vec3(0, -90, -180), 2);
+     clip8->AddRotationKeyFrame(glm::vec3(0, -90,-270 ), 3);
+     clip8->AddRotationKeyFrame(glm::vec3(0, -90, -359), 4);
+
+     clip8->AddScaleKeyFrame(glm::vec3(0.02f), 0);
+     clip8->AddScaleKeyFrame(glm::vec3(0.01f), 3,EasingType::sineEaseInOut);
+     clip8->AddScaleKeyFrame(glm::vec3(0.02f), 4, EasingType::sineEaseInOut);
+
+     clip8->AddColoreKeyFrame(glm::vec3(1, 1, 0), 0, EasingType::sineEaseOut);
+     clip8->AddColoreKeyFrame(glm::vec3(1, 1, 1), 1);
+     clip8->AddColoreKeyFrame(glm::vec3(1, 1, 0), 4, EasingType::sineEaseOut);
+
+
+
+     Animation* clip9 = new Animation();
+
+     clip9->AddPositionKeyFrame(glm::vec3(30, 0, 5), 0,EasingType::sineEaseIn);
+     clip9->AddPositionKeyFrame(glm::vec3(5, 0, 5), 1);
+     clip9->AddPositionKeyFrame(glm::vec3(-5, 0, 5), 2);
+     clip9->AddPositionKeyFrame(glm::vec3(-30, 0, 5), 4, EasingType::sineEaseInOut);
+
+
+     clip9->AddRotationKeyFrame(glm::vec3(0, 90, 0), 0, EasingType::sineEaseIn);
+     clip9->AddRotationKeyFrame(glm::vec3(5, 90, 0), 1);
+     clip9->AddRotationKeyFrame(glm::vec3(0, 90, 0), 2);
+     clip9->AddRotationKeyFrame(glm::vec3(5, 90, 0), 3, EasingType::sineEaseInOut);
+     clip9->AddRotationKeyFrame(glm::vec3(0, 90, 0), 4, EasingType::sineEaseInOut);
+
+
+     clip9->AddColoreKeyFrame(glm::vec3(1, 0, 0), 0, EasingType::sineEaseIn);
+     clip9->AddColoreKeyFrame(glm::vec3(1, 1, 1), 1);
+     clip9->AddColoreKeyFrame(glm::vec3(1, 1,1), 2);
+     clip9->AddColoreKeyFrame(glm::vec3(0, 1, 0), 4, EasingType::sineEaseOut);
+
+ //    asteroidGroups->transform.SetRotation(glm::vec3(0, 90, 0));
+
+
+     AnimationSequence* sequence3 = new AnimationSequence();
+
+
+     sequence3->AddAnimationClip(clip7, SpaceShip);
+     sequence3->AddAnimationClip(clip8, fighterJet);
+     sequence3->AddAnimationClip(clip9, asteroidGroups);
+
+
+   //  AnimationSystem::GetInstance().SetSequence(sequence3);
+
+    #pragma endregion
 
 
 
