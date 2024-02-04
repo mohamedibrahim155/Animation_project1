@@ -20,6 +20,8 @@ public :
 	void SetAnimationSpeed(int speed);
 	void NextSequence();
 
+	void SequenceStart();
+
 	AnimationSequence* currentSequence = nullptr;
 
 private:

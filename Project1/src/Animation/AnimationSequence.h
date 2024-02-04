@@ -29,6 +29,7 @@ public:
 	void SetModeState(const Mode& sequenceMode);
 
 	void ResetTime();
+	void ResetPositions();
 	void SetVisibilityRenderers(bool isActive);
 
 	float GetTotalTimeFrame();
@@ -41,7 +42,7 @@ private:
 	std::map<Model*, Animation*>::iterator clipsIterator;
 
 	float sequenceTotalTime = 0;
-	float sequenceDeltaTime = 0;
+	float currentTime = 0;
 
 	int currentIndex = 0;
 

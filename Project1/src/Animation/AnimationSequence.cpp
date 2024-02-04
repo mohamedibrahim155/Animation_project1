@@ -90,34 +90,38 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 	{
 	case NORMAL:
 
-		sequenceDeltaTime += deltaTime;
+		currentTime += deltaTime;
 
-		if (sequenceDeltaTime > sequenceTotalTime)
-		{
-			sequenceDeltaTime = sequenceTotalTime;
-		}
+		
 		break;
 	case REWIND:
 
-		sequenceDeltaTime -= deltaTime;
+		currentTime -= deltaTime;
 
-		if (sequenceDeltaTime < 0)
-		{
-			sequenceDeltaTime = 0;
-		}
+		
 		break;
 
 	}
 	
+	if (currentTime < 0)
+	{
+		currentTime = 0;
+	}
+
+	if (currentTime > sequenceTotalTime)
+	{
+		currentTime = sequenceTotalTime;
+	}
 
 
+	
 	for (clipsIterator = animationClipsWithObjectsList.begin(); clipsIterator !=  animationClipsWithObjectsList.end(); clipsIterator++)
 	{
 		Model* entity = clipsIterator->first;     //Model 
 
 		Animation* animation = clipsIterator->second; // Animation clip
 
-		animation->time = sequenceDeltaTime;
+		animation->time = currentTime;
 
 		double time = animation->time;
 
@@ -126,7 +130,7 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 
 			if (animation->positionKeyFrameList.size() == 1)
 			{
-				animation->SetAnimationState(AnimationState::NONE);
+				
 				entity->transform.position = animation->positionKeyFrameList[0].position;
 			}
 			else if (animation->positionKeyFrameList.size() > 1)
@@ -188,7 +192,7 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 		{
 			if (animation->rotationKeyFrameList.size() == 1)
 			{
-				animation->SetAnimationState(AnimationState::NONE);
+				
 				entity->transform.SetQuatRotation(animation->rotationKeyFrameList[0].rotation);
 			}
 			else if (animation->rotationKeyFrameList.size() > 1)
@@ -252,7 +256,7 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 		{
 			if (animation->scaleKeyFrameList.size() == 1)
 			{
-				animation->SetAnimationState(AnimationState::NONE);
+			
 				entity->transform.SetScale(animation->scaleKeyFrameList[0].scale);
 			}
 			else if (animation->scaleKeyFrameList.size() > 1)
@@ -314,7 +318,6 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 			{
 				if (animation->colorKeyFrameList.size() == 1)
 				{
-					animation->SetAnimationState(AnimationState::NONE);
 					if (Model* modelEntity = dynamic_cast<Model*>(entity))
 					{
 						modelEntity->meshes[0]->meshMaterial->material()->SetBaseColor
@@ -386,7 +389,52 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 
              #pragma endregion
 
-       
+
+#pragma region Event
+			{
+				if (animation->eventKeyFrameList.size() == 1)
+				{
+					if (!animation->eventKeyFrameList[0].isEventTriggered)
+					{
+						animation->eventKeyFrameList[0].callBack();
+						animation->eventKeyFrameList[0].isEventTriggered = true;
+
+					}
+
+				}
+				else if (animation->eventKeyFrameList.size() > 1)
+				{
+					int keyFrameEndIndex = 0;
+
+					for (; keyFrameEndIndex < animation->eventKeyFrameList.size(); keyFrameEndIndex++)
+					{
+						if (animation->eventKeyFrameList[keyFrameEndIndex].time > time)
+						{
+							break;
+
+						}
+					}
+
+					if (keyFrameEndIndex >= animation->eventKeyFrameList.size())
+					{
+					
+
+						return;
+					}
+					int keyFrameStartIndex = keyFrameEndIndex - 1;
+
+					EventKeyFrame startKeyFrame = animation->eventKeyFrameList[keyFrameStartIndex];
+					EventKeyFrame endKeyFrame = animation->eventKeyFrameList[keyFrameEndIndex];
+
+					float percent = (time - startKeyFrame.time) / (endKeyFrame.time - startKeyFrame.time);
+					float result = 0.0f;
+
+
+				}
+			}
+
+#pragma endregion
+
 
 	}
 	
@@ -414,14 +462,110 @@ void AnimationSequence::ResetTime()
 	switch (SequenceMode)
 	{
 	case NORMAL:
-		sequenceDeltaTime = 0;
+		currentTime = 0;
 		break;
 	case REWIND:
-		sequenceDeltaTime = sequenceTotalTime;
+		currentTime = sequenceTotalTime;
+	//	SequenceMode = NORMAL;
 		break;
 	}
 
 	
+}
+
+void AnimationSequence::ResetPositions()
+{
+	int index = 0;
+
+	
+	switch (SequenceMode)
+	{
+	case NORMAL:
+	/*	for (std::pair<Model*, Animation*> animationObject : animationClipsWithObjectsList)
+		{
+			if (animationObject.second->positionKeyFrameList.size() >= 1)
+			{
+				animationObject.first->transform.SetPosition(animationObject.second->positionKeyFrameList[0].position);
+			}
+			if (animationObject.second->rotationKeyFrameList.size() >= 1);
+			{
+				animationObject.first->transform.SetQuatRotation(animationObject.second->rotationKeyFrameList[0].rotation);
+
+			}
+
+			if (animationObject.second->scaleKeyFrameList.size() >= 1)
+			{
+				animationObject.first->transform.SetScale(animationObject.second->scaleKeyFrameList[0].scale);
+
+			}
+
+			if (animationObject.second->colorKeyFrameList.size() >= 1)
+			{
+				animationObject.first->meshes[0]->meshMaterial->material()->
+					SetBaseColor(glm::vec4(animationObject.second->colorKeyFrameList[0].color, 1));
+			}
+		}*/
+		break;
+	case REWIND:
+		//for (std::pair<Model*, Animation*> animationObject : animationClipsWithObjectsList)
+		//{
+		//	if (animationObject.second->positionKeyFrameList.size() >= 1)
+		//	{
+		//		animationObject.first->transform.SetPosition
+		//		(animationObject.second->positionKeyFrameList[animationObject.second->positionKeyFrameList.size() - 1].position);
+		//	}
+		//	if (animationObject.second->rotationKeyFrameList.size() >= 1)
+		//	{
+		//		animationObject.first->transform.SetQuatRotation
+		//		(animationObject.second->rotationKeyFrameList[animationObject.second->rotationKeyFrameList.size() - 1].rotation);
+
+		//	}
+
+		//	if (animationObject.second->scaleKeyFrameList.size() >= 1)
+		//	{
+		//		animationObject.first->transform.SetScale
+		//		(animationObject.second->scaleKeyFrameList[animationObject.second->scaleKeyFrameList.size() - 1].scale);
+
+		//	}
+
+		//	if (animationObject.second->colorKeyFrameList.size() >= 1)
+		//	{
+		//		animationObject.first->meshes[0]->meshMaterial->material()->
+		//			SetBaseColor(glm::vec4(animationObject.second->colorKeyFrameList[animationObject.second->colorKeyFrameList.size() - 1].color, 1));
+		//	}
+		//}
+		
+
+
+		for (const std::pair<Model*, Animation*>& animationObject : animationClipsWithObjectsList)
+		{
+			Animation& animation = *animationObject.second;
+			Transform& transform = animationObject.first->transform;
+
+			const std::vector<PositionKeyFrame>& posKeyFrames = animation.positionKeyFrameList;
+			const std::vector<RotationKeyFrame>& rotKeyFrames = animation.rotationKeyFrameList;
+			const std::vector<ScaleKeyFrame>& scaleKeyFrames = animation.scaleKeyFrameList;
+			const std::vector<ColorKeyFrame>& colorKeyFrames = animation.colorKeyFrameList;
+
+			if (!posKeyFrames.empty())
+				transform.SetPosition(posKeyFrames[0].position);
+
+			if (!rotKeyFrames.empty())
+				transform.SetQuatRotation(rotKeyFrames[0].rotation);
+
+			if (!scaleKeyFrames.empty())
+				transform.SetScale(scaleKeyFrames[0].scale);
+
+			if (!colorKeyFrames.empty())
+			{
+				const glm::vec3& color = colorKeyFrames[0].color;
+				animationObject.first->meshes[0]->meshMaterial->material()->
+					SetBaseColor(glm::vec4(color, 1));
+			}
+		}
+		break;
+	}
+
 }
 
 

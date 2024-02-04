@@ -20,21 +20,11 @@ void Animation::AddColoreKeyFrame(const glm::vec3& color, double time, EasingTyp
 	colorKeyFrameList.push_back(ColorKeyFrame(color, time, easeType));
 }
 
-void Animation::SetAnimationState(const AnimationState& animationState)
+void Animation::AddEventKeyFrame(double time, std::function<void()> OnEventCallback)
 {
-	currentAnimationState = animationState;
+	eventKeyFrameList.push_back(EventKeyFrame(time, OnEventCallback));
 }
 
-AnimationState Animation::GetCurrentAnimationState()
-{
-	return currentAnimationState;
-}
-
-double Animation::GetTotalAnimationTime()
-{
-
-	return 0.0;
-}
 
 void Animation::SetAnimationTime(float time)
 {

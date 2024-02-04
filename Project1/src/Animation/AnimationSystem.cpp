@@ -22,9 +22,9 @@ void AnimationSystem::UpdateAnimationSequence(float deltaTime)
 
 void AnimationSystem::ToggleRewind()
 {
-	isRewind = !isRewind;
+//	isRewind = !isRewind;
 
-	currentSequence->SetModeState(isRewind ? REWIND : NORMAL);
+	currentSequence->SetModeState(currentSequence->SequenceMode == REWIND ? NORMAL : REWIND);
 }
 
 
@@ -49,21 +49,6 @@ void AnimationSystem::RemoveAnimationSequence(AnimationSequence* animation)
 void AnimationSystem::SetSequence(AnimationSequence* sequence)
 {
 	currentSequence = sequence;
-
-	//for (size_t i = 0; i < animationSequences.size(); i++)
-	//{
-	//	if (animationSequences[i] == sequence)
-	//	{
-	//		currentSequenceIndex = i;
-	//		return;
-	//	}
-	//}
-
-
-	//animationSequences.push_back(sequence);
-
-	//currentSequenceIndex = animationSequences.size() - 1;
-
 }
 
 void AnimationSystem::SetAnimationSpeed(int speed)
@@ -84,11 +69,13 @@ void AnimationSystem::NextSequence()
 
 	currentSequence->ResetTime();
 
+	currentSequence->ResetPositions();
+
 	currentSequence->SetVisibilityRenderers(false);
 
 	if (currentSequenceIndex >= animationSequences.size())
 	{
-		currentSequenceIndex = 0;
+		currentSequenceIndex = animationSequences.size()-1;
 	}
 
 	SetSequence(animationSequences[currentSequenceIndex]);

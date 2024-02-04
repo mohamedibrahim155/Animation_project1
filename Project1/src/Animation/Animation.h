@@ -4,6 +4,7 @@
 #include <glm/gtx/easing.hpp>
 #include <vector>
 #include "../model.h"
+#include <functional>
 
 enum class EasingType
 {
@@ -78,23 +79,14 @@ struct ColorKeyFrame
 
 struct EventKeyFrame
 {
-	EventKeyFrame(double _time) : time(_time)	
+	EventKeyFrame(double _time, std::function<void()> OnEventCallback) : time(_time), callBack(OnEventCallback)
 	{
-	} 
+	}
 
 	double time;
+	std::function<void()> callBack;
+	bool isEventTriggered = false;
 };
-
-enum class AnimationState
-{
-	NONE = -1, 
-	START = 0,
-	PAUSE =1,
-	STOP = 2,
-	RESUME = 3,
-	COMPLETE = 4,
-};
-
 
 
 class Animation
@@ -105,22 +97,18 @@ public:
 	void AddRotationKeyFrame(const glm::quat& rotaion, double time, EasingType easeType = EasingType::Linear);
 	void AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType easeType = EasingType::Linear);
 	void AddColoreKeyFrame(const glm::vec3& color, double time, EasingType easeType = EasingType::Linear);
+	void AddEventKeyFrame( double time, std::function<void()> OnEventCallback = nullptr);
 
-	void SetAnimationState(const AnimationState& animationState);
-	AnimationState GetCurrentAnimationState();
-
-	double GetTotalAnimationTime();
 	void SetAnimationTime(float time);
 
 	std::vector<PositionKeyFrame> positionKeyFrameList;
 	std::vector<RotationKeyFrame> rotationKeyFrameList;
 	std::vector<ScaleKeyFrame> scaleKeyFrameList;
 	std::vector<ColorKeyFrame> colorKeyFrameList;
+	std::vector<EventKeyFrame> eventKeyFrameList;
 
-	AnimationState currentAnimationState = AnimationState::NONE;
 
 	double time;
-
 	bool isPaused = false;
 
 };
