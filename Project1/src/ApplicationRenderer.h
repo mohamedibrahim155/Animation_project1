@@ -51,6 +51,8 @@ public:
 
 
 private:
+	void AnimationScene();
+
 	GLFWwindow* window;
 	Camera camera;
 	
@@ -85,6 +87,7 @@ private:
 
 	 bool firstMouse;
 	 bool playAnimation = false;
+	 bool imguiRender = false;
 
 	 unsigned long long m_FrameNumber = 0;
 

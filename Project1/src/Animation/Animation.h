@@ -41,7 +41,15 @@ struct RotationKeyFrame
 	{
 	}
 
-	glm::quat rotation;
+	RotationKeyFrame(const glm::vec3& _rotation, double _time, EasingType _easeType = EasingType::Linear) :
+		rotation_vec3(_rotation),
+		time(_time),
+		easeType(_easeType)
+	{
+	}
+
+	glm::quat rotation =  glm::quat(1,0,0,1);
+	glm::vec3 rotation_vec3 =  glm::vec3(0);
 	EasingType easeType;
 	double time;
 
@@ -94,7 +102,8 @@ class Animation
 public:
 
 	void AddPositionKeyFrame(const glm::vec3& position, double time, EasingType easeType = EasingType::Linear);
-	void AddRotationKeyFrame(const glm::quat& rotaion, double time, EasingType easeType = EasingType::Linear);
+	void AddRotationKeyFrame(const glm::quat& rotation, double time, EasingType easeType = EasingType::Linear);
+	void AddRotationKeyFrame(const glm::vec3& rotation, double time, EasingType easeType = EasingType::Linear);
 	void AddScaleKeyFrame(const glm::vec3& scale, double time, EasingType easeType = EasingType::Linear);
 	void AddColoreKeyFrame(const glm::vec3& color, double time, EasingType easeType = EasingType::Linear);
 	void AddEventKeyFrame( double time, std::function<void()> OnEventCallback = nullptr);

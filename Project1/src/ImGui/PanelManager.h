@@ -30,6 +30,8 @@ private:
 
 	bool dockOpen = true;
 
+	bool isPanelRendering = true;
+
 
 	std::vector<BasePanel*> listOfPanels;
 };

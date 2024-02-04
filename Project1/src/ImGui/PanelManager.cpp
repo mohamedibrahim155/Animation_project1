@@ -124,6 +124,9 @@ void PanelManager::DisablePanel(BasePanel* panel)
 
 void PanelManager::Update(float windowWidth, float windowHeight)
 {
+    isPanelRendering = false;
+    if (!isPanelRendering) return;
+
     for (BasePanel* panel : listOfPanels)
     {
         if (!panel->isEnable)

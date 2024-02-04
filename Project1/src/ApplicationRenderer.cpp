@@ -131,52 +131,15 @@ void ApplicationRenderer::Start()
     GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
-   /* skybox = new Skybox(); 
-    
-    skybox->AssignSkyboxShader(SkyboxShader);
-    skybox->SkyboxPrerender();*/
     
 
     render.AssignCamera(&camera);
 
     Model* Sphere = new Model((char*)"Models/DefaultSphere/Sphere_1_unit_Radius.ply", true);
-   // Model* Sphere = new Model();
-
-   // Model* scroll = new Model((char*)"Models/Scroll/scroll.obj", true);
-   // scroll->transform.position.y -= 5;
-   // scroll->meshes[0]->TextureScrolling(true);
-
-
-     Model* Pokeball = new Model((char*)"Models/Pokeball/pokeball.obj");
-
-    Model* floor = new Model((char*)"Models/Floor/Floor.fbx");
-    floor->transform.SetRotation(glm::vec3(90, 0, 0));
-    floor->transform.SetPosition(glm::vec3(0, -2, 0));
-   
-    Model* floor2 = new Model(*floor);
-    floor2->transform.SetRotation(glm::vec3(90, 0, 0));
-    floor2->transform.SetPosition(glm::vec3(0, 2, 0));
-   
-   
-    Model* floor3 = new Model(*floor);
-   
-    floor3->transform.SetPosition(glm::vec3(-2, 0, 0));
-    Model* floor4 = new Model(*floor);
-    floor4->transform.SetPosition(glm::vec3(2, 0, 0));
-    floor4->meshes[0]->meshMaterial->material()->useMaskTexture = false;
-    floor4->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, 1, 1, 0.5f));
-
-
-
-     Sphere->transform.position.x += 2;
-     Pokeball->transform.position.x -= 2;
-    
-
 
      Model* dir = new Model("Models/DefaultSphere/Sphere_1_unit_Radius.ply",false);
      dir->transform.SetScale(glm::vec3(0.5f));
-    // Model* spotlight = new Model(*Sphere);
-     //spotlight->transform.SetPosition(glm::vec3(-2.0f, 0.0f, -3.0f));
+
 
      Light directionLight;
      directionLight.lightType = LightType::DIRECTION_LIGHT;
@@ -193,14 +156,6 @@ void ApplicationRenderer::Start()
      dir->transform.SetRotation(glm::vec3(0, 0, 0));
      dir->transform.SetPosition(glm::vec3(0, 0, 2));
 
-    
-     Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
-     Texture* plantAlphaTexture = new Texture();
-
-
-     
-  //   render.selectedModel = Sphere;
-
      render.AddModelAndShader(dir,SolidColorShader);
 
 
@@ -209,85 +164,9 @@ void ApplicationRenderer::Start()
 
      
 
+     camera.transform.SetPosition(glm::vec3(0, 0, -20));
 
-#pragma region Animation StartUps
-     dir->entityID = "DirectionLight";
-
-    // Animation* directionLightAnimation = dir->animation;
-
-     Animation* DirectionAnimation = new Animation();
-     DirectionAnimation->AddPositionKeyFrame(glm::vec3(5, 0, 0), 0);
-     DirectionAnimation->AddPositionKeyFrame(glm::vec3(5, 2, 0), 1);
-     DirectionAnimation->AddPositionKeyFrame(glm::vec3(5, 5, 0), 2);
-     DirectionAnimation->AddPositionKeyFrame(glm::vec3(2, 5, 0), 3);
-
-     DirectionAnimation->AddColoreKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseIn);
-     DirectionAnimation->AddColoreKeyFrame(glm::vec3(0, 1, 0), 1, EasingType::sineEaseInOut);
-     DirectionAnimation->AddColoreKeyFrame(glm::vec3(0, 0, 1), 5, EasingType::sineEaseOut);
-
-
-     Model* SecondModel = new Model(*plant);
-     render.AddModelAndShader(SecondModel, defaultShader);
-
-     SecondModel->entityID = "SecondModel";
-
-     Animation* secondModelAnimation = new Animation();
-
-     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-5, 0, 0), 0);
-     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-5, 2, 0), 1, EasingType::sineEaseIn);
-     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-5, 5, 0), 2, EasingType::sineEaseInOut);
-     secondModelAnimation->AddPositionKeyFrame(glm::vec3(-2, 5, 0), 3, EasingType::sineEaseOut);
-
-     secondModelAnimation->AddRotationKeyFrame(glm::quat(1.0f, 0.f, 0.f, 0.f), 0, EasingType::sineEaseOut);
-     secondModelAnimation->AddRotationKeyFrame(glm::quat(0.0f, 0.f, 1.0f, 0.f), 1, EasingType::sineEaseOut);
-     secondModelAnimation->AddRotationKeyFrame(glm::quat(0.0f, 1.0f, 0.0f, 0.f), 2, EasingType::sineEaseOut);
-     secondModelAnimation->AddRotationKeyFrame(glm::quat(0.0f, 0.0f, 1.0f, 0.f), 3, EasingType::sineEaseOut);
-
-     secondModelAnimation->AddScaleKeyFrame(glm::vec3(1, 1, 1), 0, EasingType::sineEaseOut);
-   //  SecondModel->animation->AddScaleKeyFrame(glm::vec3(1, 1.5f, 1), 1, EasingType::sineEaseOut);
-
-  //   SecondModel->animation->AddScaleKeyFrame(glm::vec3(2.5f, 2.5f, 2.5f), 2, EasingType::sineEaseOut);
-     secondModelAnimation->AddScaleKeyFrame(glm::vec3(15, 15,15), 5, EasingType::sineEaseOut);
-
-
-
-     secondModelAnimation->AddColoreKeyFrame(glm::vec3(1, 1,1), 0, EasingType::sineEaseOut);
-     secondModelAnimation->AddColoreKeyFrame(glm::vec3(0, 1,0), 1, EasingType::sineEaseOut);
-     secondModelAnimation->AddColoreKeyFrame(glm::vec3(0, 0,1), 1, EasingType::sineEaseOut);
-
-     DirectionAnimation->AddEventKeyFrame(2, []
-         {
-             std::cout << "Event Triggered" << std::endl;
-         }
-     );
-
-     secondModelAnimation->AddEventKeyFrame(3, []
-         {
-             std::cout << "model 2 Triggered" << std::endl;
-         }
-     );
-
-
-
-     
-     AnimationSequence* anim1 = new AnimationSequence();
-
-     anim1->AddAnimationClip(DirectionAnimation, dir);
-   //  anim1->AddAnimationClip(dir->animation, dir);
-   //  anim1->AddAnimationClip(SecondModel->animation, SecondModel);
-     AnimationSequence* anim2 = new AnimationSequence();
-
-     anim2->AddAnimationClip(secondModelAnimation, SecondModel);
-
-   //  AnimationSystem::GetInstance().AddAnimationSequence(anim1);
-  //   AnimationSystem::GetInstance().AddAnimationSequence(anim2);
-     AnimationSystem::GetInstance().SetSequence(anim1);
-
-
-
-
-#pragma endregion
-
+     AnimationScene();
 }
 
 void ApplicationRenderer::PreRender()
@@ -343,6 +222,7 @@ void ApplicationRenderer::PreRender()
     /* ScrollShader->Bind();
        ScrollShader->setMat4("ProjectionMatrix", _projection);*/
 
+    imguiRender = true;
 }
 
 void ApplicationRenderer::Render()
@@ -452,6 +332,61 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     }
 
 
+}
+
+void ApplicationRenderer::AnimationScene()
+{
+#pragma region Animation StartUps
+
+    Model* SpaceShip = new Model("Models/SpaceShip/SpaceShip.ply");
+
+    SpaceShip->name = "SPACESHIP";
+    SpaceShip->entityID = "SPACESHIP_1";
+    SpaceShip->transform.SetPosition(glm::vec3(-15, 0, 0));
+    SpaceShip->transform.SetScale(glm::vec3(0.02f));
+
+    render.AddModelAndShader(SpaceShip, defaultShader);
+
+    // Animation* directionLightAnimation = dir->animation;
+
+    Animation* spaceShipAnimation = new Animation();
+    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(-15, 0, 0), 0);
+    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(-10, 2, 0), 1, EasingType::sineEaseIn);
+    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(-5, -2, -5), 2, EasingType::sineEaseIn);
+    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(2, -2, -5), 3, EasingType::sineEaseIn);
+    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(12, 0, 0), 4, EasingType::sineEaseIn);
+    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(20, 0, 0), 5, EasingType::sineEaseIn);
+
+    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(0, 0, 0), 0 );
+    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(-90, 0, 0), 2);
+    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(-45, 0, 0), 3);
+    //spaceShipAnimation->AddRotationKeyFrame(glm::vec3(0, 0, 0), 4);
+    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(0, 0, 0), 5);
+
+    spaceShipAnimation->AddColoreKeyFrame(glm::vec3(1, 0, 0), 0, EasingType::sineEaseIn);
+  //  spaceShipAnimation->AddColoreKeyFrame(glm::vec3(0, 1, 0), 1, EasingType::sineEaseInOut);
+   // spaceShipAnimation->AddColoreKeyFrame(glm::vec3(0, 0, 1), 5, EasingType::sineEaseOut);
+
+
+    
+
+
+
+
+    AnimationSequence* anim1 = new AnimationSequence();
+
+    anim1->AddAnimationClip(spaceShipAnimation, SpaceShip);
+  
+    AnimationSequence* anim2 = new AnimationSequence();
+
+
+ 
+    AnimationSystem::GetInstance().SetSequence(anim1);
+
+
+
+
+#pragma endregion
 }
 
  void ApplicationRenderer::SetViewPort(GLFWwindow* window, int width, int height)

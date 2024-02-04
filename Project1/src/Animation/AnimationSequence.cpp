@@ -189,7 +189,7 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 		}
 
 		//Rotation
-		{
+		/*{
 			if (animation->rotationKeyFrameList.size() == 1)
 			{
 				
@@ -246,7 +246,73 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 				entity->transform.SetQuatRotation(glm::slerp(startKeyFrame.rotation, endKeyFrame.rotation, result));
 
 			}
+		}*/
+
+
+		{
+			if (animation->rotationKeyFrameList.size() == 1)
+			{
+
+				entity->transform.SetRotation(animation->rotationKeyFrameList[0].rotation_vec3);
+			}
+			else if (animation->rotationKeyFrameList.size() > 1)
+			{
+				int keyFrameEndIndex = 0;
+
+				for (; keyFrameEndIndex < animation->rotationKeyFrameList.size(); keyFrameEndIndex++)
+				{
+					if (animation->rotationKeyFrameList[keyFrameEndIndex].time > time)
+					{
+						break;
+
+					}
+				}
+
+				if (keyFrameEndIndex >= animation->rotationKeyFrameList.size())
+				{
+
+					entity->transform.SetRotation(animation->rotationKeyFrameList[keyFrameEndIndex - 1].rotation_vec3);
+
+					return;
+				}
+				int keyFrameStartIndex = keyFrameEndIndex - 1;
+
+				RotationKeyFrame startKeyFrame = animation->rotationKeyFrameList[keyFrameStartIndex];
+				RotationKeyFrame endKeyFrame = animation->rotationKeyFrameList[keyFrameEndIndex];
+
+				float percent = (time - startKeyFrame.time) / (endKeyFrame.time - startKeyFrame.time);
+				float result = 0.0f;
+
+
+				switch (endKeyFrame.easeType)
+				{
+				case EasingType::Linear:
+					result = percent;
+					break;
+
+				case EasingType::sineEaseIn:
+					result = glm::sineEaseIn(percent);
+					break;
+
+				case EasingType::sineEaseOut:
+					result = glm::sineEaseOut(percent);
+					break;
+
+				case EasingType::sineEaseInOut:
+					result = glm::sineEaseInOut(percent);
+					break;
+				}
+
+				glm::quat startRotation = glm::quat(glm::radians(startKeyFrame.rotation_vec3));
+				glm::quat endRotation = glm::quat(glm::radians(endKeyFrame.rotation_vec3));
+
+				glm::quat quaternionRotation = glm::slerp(startRotation, endRotation, result);
+
+				entity->transform.SetQuatRotation(quaternionRotation);
+
+			}
 		}
+
 
 
 
@@ -532,7 +598,7 @@ void AnimationSequence::ResetPositions()
 				transform.SetPosition(posKeyFrames[posKeyFrames.size()-1].position);
 
 			if (!rotKeyFrames.empty())
-				transform.SetQuatRotation(rotKeyFrames[rotKeyFrames.size() - 1].rotation);
+				transform.SetQuatRotation(rotKeyFrames[rotKeyFrames.size() - 1].rotation_vec3);
 
 			if (!scaleKeyFrames.empty())
 				transform.SetScale(scaleKeyFrames[scaleKeyFrames.size() - 1].scale);
