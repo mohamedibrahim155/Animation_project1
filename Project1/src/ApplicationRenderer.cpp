@@ -166,28 +166,6 @@ void ApplicationRenderer::Start()
     floor4->meshes[0]->meshMaterial->material()->useMaskTexture = false;
     floor4->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, 1, 1, 0.5f));
 
-   //  Model* Pokeball2 = new Model((char*)"Models/Pokeball/pokeball.obj", true);
-
-
-    // Model* Grass = new Model((char*)"Models/Grass/Grass.obj", true,true, true);
-    
-   /*  Model* Window = new Model();
-     Window->alphaMask = new Texture();
-     
-     Window->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png","opacity_Texture");
-     Window->loadModel("Models/Window/Window.obj");
-     Window->isTransparant = true;
-     Window->isCutOut = false;
-
-     Model* Window2 = new Model();
-     Window2->alphaMask = new Texture();
-     Window2->isTransparant = true;
-     Window2->isCutOut = false;
-     Window2->alphaMask->LoadTexture("Models/Window/WindowAlphaMask.png", "opacity_Texture");
-     Window2->loadModel((char*)"Models/Window/Window.obj");*/
-   
-   
-     
 
 
      Sphere->transform.position.x += 2;
@@ -218,20 +196,6 @@ void ApplicationRenderer::Start()
     
      Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
      Texture* plantAlphaTexture = new Texture();
-    // plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2_Opacity.png", "opacity_Texture");
-   //  plantAlphaTexture->LoadTexture("Models/Plant.fbm/Plant.fbm/Leaf_Front_1_2.png", "opacity_Texture");
-      //   plant->meshes[0]->meshMaterial->material()->alphaTexture = plantAlphaTexture;
- //   plant->meshes[0]->meshMaterial->material()->useMaskTexture = fa;
-
-
-    // render.AddModelAndShader(Pokeball, defaultShader);
-   // render.AddModelAndShader(plant, alphaCutoutShader);
-   // render.AddModelAndShader(floor, defaultShader);
-   // render.AddModelAndShader(floor2, defaultShader);
-   // render.AddModelAndShader(floor3, defaultShader);
-   // render.AddModelAndShader(floor4, alphaBlendShader);
-  
-
 
 
      
@@ -242,12 +206,7 @@ void ApplicationRenderer::Start()
 
      //LightRenderer
      lightManager.AddNewLight(directionLight);
-   //  lightManager.AddNewLight(spot);
-   //  lightManager.SetUniforms(defaultShader->ID);
-   //  PhysicsObject* SpherePhyiscs = new PhysicsObject(Sphere);
-   //  SpherePhyiscs->Initialize(false, true, DYNAMIC);
 
-   //  PhysicsEngine.AddPhysicsObjects(SpherePhyiscs);
      
 
 
@@ -295,6 +254,19 @@ void ApplicationRenderer::Start()
      secondModelAnimation->AddColoreKeyFrame(glm::vec3(1, 1,1), 0, EasingType::sineEaseOut);
      secondModelAnimation->AddColoreKeyFrame(glm::vec3(0, 1,0), 1, EasingType::sineEaseOut);
      secondModelAnimation->AddColoreKeyFrame(glm::vec3(0, 0,1), 1, EasingType::sineEaseOut);
+
+     DirectionAnimation->AddEventKeyFrame(2, []
+         {
+             std::cout << "Event Triggered" << std::endl;
+         }
+     );
+
+     secondModelAnimation->AddEventKeyFrame(3, []
+         {
+             std::cout << "model 2 Triggered" << std::endl;
+         }
+     );
+
 
 
      

@@ -392,44 +392,24 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 
 #pragma region Event
 			{
-				if (animation->eventKeyFrameList.size() == 1)
+				
+				 if (animation->eventKeyFrameList.size() > 0)
 				{
-					if (!animation->eventKeyFrameList[0].isEventTriggered)
-					{
-						animation->eventKeyFrameList[0].callBack();
-						animation->eventKeyFrameList[0].isEventTriggered = true;
-
-					}
-
-				}
-				else if (animation->eventKeyFrameList.size() > 1)
-				{
-					int keyFrameEndIndex = 0;
-
-					for (; keyFrameEndIndex < animation->eventKeyFrameList.size(); keyFrameEndIndex++)
-					{
-						if (animation->eventKeyFrameList[keyFrameEndIndex].time > time)
-						{
-							break;
-
-						}
-					}
-
-					if (keyFrameEndIndex >= animation->eventKeyFrameList.size())
-					{
 					
 
-						return;
+					for (int keyFrameEndIndex = 0; keyFrameEndIndex < animation->eventKeyFrameList.size(); keyFrameEndIndex++)
+					{
+						
+						if (time >= animation->eventKeyFrameList[keyFrameEndIndex].time)
+						{
+							if (!animation->eventKeyFrameList[keyFrameEndIndex].isEventTriggered)
+							{
+								animation->eventKeyFrameList[keyFrameEndIndex].callBack();
+								animation->eventKeyFrameList[keyFrameEndIndex].isEventTriggered = true;
+							}
+							
+						}
 					}
-					int keyFrameStartIndex = keyFrameEndIndex - 1;
-
-					EventKeyFrame startKeyFrame = animation->eventKeyFrameList[keyFrameStartIndex];
-					EventKeyFrame endKeyFrame = animation->eventKeyFrameList[keyFrameEndIndex];
-
-					float percent = (time - startKeyFrame.time) / (endKeyFrame.time - startKeyFrame.time);
-					float result = 0.0f;
-
-
 				}
 			}
 
@@ -546,6 +526,7 @@ void AnimationSequence::ResetPositions()
 			const std::vector<RotationKeyFrame>& rotKeyFrames = animation.rotationKeyFrameList;
 			const std::vector<ScaleKeyFrame>& scaleKeyFrames = animation.scaleKeyFrameList;
 			const std::vector<ColorKeyFrame>& colorKeyFrames = animation.colorKeyFrameList;
+			const std::vector<EventKeyFrame>& eventKeyFrames = animation.eventKeyFrameList;
 
 			if (!posKeyFrames.empty())
 				transform.SetPosition(posKeyFrames[posKeyFrames.size()-1].position);
@@ -561,6 +542,16 @@ void AnimationSequence::ResetPositions()
 				const glm::vec3& color = colorKeyFrames[colorKeyFrames.size() - 1].color;
 				animationObject.first->meshes[0]->meshMaterial->material()->
 					SetBaseColor(glm::vec4(color, 1));
+			}
+
+			if (!eventKeyFrames.empty())
+			{
+				EventKeyFrame event = eventKeyFrames[eventKeyFrames.size() - 1];
+				if (event.callBack != nullptr)
+				{
+					event.isEventTriggered = false;
+				}
+		
 			}
 		}
 		break;
