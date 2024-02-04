@@ -114,7 +114,7 @@ public:
 	std::vector<RotationKeyFrame> rotationKeyFrameList;
 	std::vector<ScaleKeyFrame> scaleKeyFrameList;
 	std::vector<ColorKeyFrame> colorKeyFrameList;
-	std::vector<EventKeyFrame> eventKeyFrameList;
+	std::vector<EventKeyFrame*> eventKeyFrameList;
 
 
 	double time;

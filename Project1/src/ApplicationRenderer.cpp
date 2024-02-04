@@ -530,13 +530,18 @@ void ApplicationRenderer::AnimationScene()
      clip6->AddColoreKeyFrame(glm::vec3(1,0.5f,0), 4);
      clip6->AddColoreKeyFrame(glm::vec3(1,0.5f,0), 5, EasingType::sineEaseInOut);
 
+     clip6->AddEventKeyFrame(3, []
+         {
+             std::cout << "##### EXPLODED! #####";
+         });
+
      AnimationSequence* sequence2 = new AnimationSequence();
 
      sequence2->AddAnimationClip(clip4, asteroid2);
      sequence2->AddAnimationClip(clip5, fighterJet);
      sequence2->AddAnimationClip(clip6, explosion);
 
-    // AnimationSystem::GetInstance().SetSequence(sequence2);
+   //  AnimationSystem::GetInstance().SetSequence(sequence2);
 #pragma endregion
 
 
@@ -605,7 +610,7 @@ void ApplicationRenderer::AnimationScene()
      clip9->AddColoreKeyFrame(glm::vec3(1, 1,1), 2);
      clip9->AddColoreKeyFrame(glm::vec3(0, 1, 0), 4, EasingType::sineEaseOut);
 
- //    asteroidGroups->transform.SetRotation(glm::vec3(0, 90, 0));
+ 
 
 
      AnimationSequence* sequence3 = new AnimationSequence();

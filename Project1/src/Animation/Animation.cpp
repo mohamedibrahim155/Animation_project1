@@ -28,7 +28,7 @@ void Animation::AddColoreKeyFrame(const glm::vec3& color, double time, EasingTyp
 
 void Animation::AddEventKeyFrame(double time, std::function<void()> OnEventCallback)
 {
-	eventKeyFrameList.push_back(EventKeyFrame(time, OnEventCallback));
+	eventKeyFrameList.push_back(new EventKeyFrame(time, OnEventCallback));
 }
 
 

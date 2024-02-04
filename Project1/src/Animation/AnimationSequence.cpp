@@ -475,12 +475,12 @@ void AnimationSequence::UpdateCurrentSequenceTime(float deltaTime)
 					for (int keyFrameEndIndex = 0; keyFrameEndIndex < animation->eventKeyFrameList.size(); keyFrameEndIndex++)
 					{
 						
-						if (time >= animation->eventKeyFrameList[keyFrameEndIndex].time)
+						if (animation->eventKeyFrameList[keyFrameEndIndex]->time < time )
 						{
-							if (!animation->eventKeyFrameList[keyFrameEndIndex].isEventTriggered)
+							if (!animation->eventKeyFrameList[keyFrameEndIndex]->isEventTriggered)
 							{
-								animation->eventKeyFrameList[keyFrameEndIndex].callBack();
-								animation->eventKeyFrameList[keyFrameEndIndex].isEventTriggered = true;
+								animation->eventKeyFrameList[keyFrameEndIndex]->callBack();
+								animation->eventKeyFrameList[keyFrameEndIndex]->isEventTriggered = true;
 							}
 							
 						}
@@ -536,62 +536,28 @@ void AnimationSequence::ResetPositions()
 	switch (SequenceMode)
 	{
 	case NORMAL:
-	/*	for (std::pair<Model*, Animation*> animationObject : animationClipsWithObjectsList)
+		for (const std::pair<Model*, Animation*>& animationObject : animationClipsWithObjectsList)
 		{
-			if (animationObject.second->positionKeyFrameList.size() >= 1)
+			Animation& animation = *animationObject.second;
+			Transform& transform = animationObject.first->transform;
+		
+			const std::vector<EventKeyFrame*>& eventKeyFrames = animation.eventKeyFrameList;
+		
+			if (!eventKeyFrames.empty())
 			{
-				animationObject.first->transform.SetPosition(animationObject.second->positionKeyFrameList[0].position);
+				for ( int i = 0 ; i< eventKeyFrames.size(); i++)
+				{
+					EventKeyFrame* events = eventKeyFrames[i];
+					if (events->isEventTriggered)
+					{
+						events->isEventTriggered = false;
+					}
+				}
 			}
-			if (animationObject.second->rotationKeyFrameList.size() >= 1);
-			{
-				animationObject.first->transform.SetQuatRotation(animationObject.second->rotationKeyFrameList[0].rotation);
-
-			}
-
-			if (animationObject.second->scaleKeyFrameList.size() >= 1)
-			{
-				animationObject.first->transform.SetScale(animationObject.second->scaleKeyFrameList[0].scale);
-
-			}
-
-			if (animationObject.second->colorKeyFrameList.size() >= 1)
-			{
-				animationObject.first->meshes[0]->meshMaterial->material()->
-					SetBaseColor(glm::vec4(animationObject.second->colorKeyFrameList[0].color, 1));
-			}
-		}*/
+		}
 		break;
 	case REWIND:
-		//for (std::pair<Model*, Animation*> animationObject : animationClipsWithObjectsList)
-		//{
-		//	if (animationObject.second->positionKeyFrameList.size() >= 1)
-		//	{
-		//		animationObject.first->transform.SetPosition
-		//		(animationObject.second->positionKeyFrameList[animationObject.second->positionKeyFrameList.size() - 1].position);
-		//	}
-		//	if (animationObject.second->rotationKeyFrameList.size() >= 1)
-		//	{
-		//		animationObject.first->transform.SetQuatRotation
-		//		(animationObject.second->rotationKeyFrameList[animationObject.second->rotationKeyFrameList.size() - 1].rotation);
-
-		//	}
-
-		//	if (animationObject.second->scaleKeyFrameList.size() >= 1)
-		//	{
-		//		animationObject.first->transform.SetScale
-		//		(animationObject.second->scaleKeyFrameList[animationObject.second->scaleKeyFrameList.size() - 1].scale);
-
-		//	}
-
-		//	if (animationObject.second->colorKeyFrameList.size() >= 1)
-		//	{
-		//		animationObject.first->meshes[0]->meshMaterial->material()->
-		//			SetBaseColor(glm::vec4(animationObject.second->colorKeyFrameList[animationObject.second->colorKeyFrameList.size() - 1].color, 1));
-		//	}
-		//}
 		
-
-
 		for (const std::pair<Model*, Animation*>& animationObject : animationClipsWithObjectsList)
 		{
 			Animation& animation = *animationObject.second;
@@ -601,7 +567,7 @@ void AnimationSequence::ResetPositions()
 			const std::vector<RotationKeyFrame>& rotKeyFrames = animation.rotationKeyFrameList;
 			const std::vector<ScaleKeyFrame>& scaleKeyFrames = animation.scaleKeyFrameList;
 			const std::vector<ColorKeyFrame>& colorKeyFrames = animation.colorKeyFrameList;
-			const std::vector<EventKeyFrame>& eventKeyFrames = animation.eventKeyFrameList;
+			const std::vector<EventKeyFrame*>& eventKeyFrames = animation.eventKeyFrameList;
 
 			if (!posKeyFrames.empty())
 				transform.SetPosition(posKeyFrames[posKeyFrames.size()-1].position);
@@ -621,10 +587,10 @@ void AnimationSequence::ResetPositions()
 
 			if (!eventKeyFrames.empty())
 			{
-				EventKeyFrame event = eventKeyFrames[eventKeyFrames.size() - 1];
-				if (event.isEventTriggered)
+				EventKeyFrame* event = eventKeyFrames[eventKeyFrames.size() - 1];
+				if (event->isEventTriggered)
 				{
-					event.isEventTriggered = false;
+					event->isEventTriggered = false;
 				}
 		
 			}
