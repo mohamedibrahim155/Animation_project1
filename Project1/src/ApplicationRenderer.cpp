@@ -338,6 +338,10 @@ void ApplicationRenderer::AnimationScene()
 {
 #pragma region Animation StartUps
 
+
+#pragma region Sequence1
+
+
     Model* SpaceShip = new Model("Models/SpaceShip/SpaceShip.ply");
 
     SpaceShip->name = "SPACESHIP";
@@ -347,41 +351,85 @@ void ApplicationRenderer::AnimationScene()
 
     render.AddModelAndShader(SpaceShip, defaultShader);
 
-    // Animation* directionLightAnimation = dir->animation;
-
-    Animation* spaceShipAnimation = new Animation();
-    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(-15, 0, 0), 0);
-    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(-10, 2, 0), 1, EasingType::sineEaseIn);
-    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(-5, -2, -5), 2, EasingType::sineEaseIn);
-    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(2, -2, -5), 3, EasingType::sineEaseIn);
-    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(12, 0, 0), 4, EasingType::sineEaseIn);
-    spaceShipAnimation->AddPositionKeyFrame(glm::vec3(20, 0, 0), 5, EasingType::sineEaseIn);
-
-    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(0, 0, 0), 0 );
-    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(-90, 0, 0), 2);
-    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(-45, 0, 0), 3);
-    //spaceShipAnimation->AddRotationKeyFrame(glm::vec3(0, 0, 0), 4);
-    spaceShipAnimation->AddRotationKeyFrame(glm::vec3(0, 0, 0), 5);
-
-    spaceShipAnimation->AddColoreKeyFrame(glm::vec3(1, 0, 0), 0, EasingType::sineEaseIn);
-  //  spaceShipAnimation->AddColoreKeyFrame(glm::vec3(0, 1, 0), 1, EasingType::sineEaseInOut);
-   // spaceShipAnimation->AddColoreKeyFrame(glm::vec3(0, 0, 1), 5, EasingType::sineEaseOut);
 
 
-    
+    Animation* clip1 = new Animation();
+    clip1->AddPositionKeyFrame(glm::vec3(-15, 0, 0), 0);
+    clip1->AddPositionKeyFrame(glm::vec3(-10, 2, 0), 1, EasingType::sineEaseIn);
+    clip1->AddPositionKeyFrame(glm::vec3(-5, -2, -5), 2, EasingType::sineEaseIn);
+    clip1->AddPositionKeyFrame(glm::vec3(2, -2, -5), 3, EasingType::sineEaseIn);
+    clip1->AddPositionKeyFrame(glm::vec3(12, 0, 0), 4, EasingType::sineEaseIn);
+    clip1->AddPositionKeyFrame(glm::vec3(20, 0, 0), 5, EasingType::sineEaseIn);
+
+    clip1->AddRotationKeyFrame(glm::vec3(0, 0, 0), 0 );
+    clip1->AddRotationKeyFrame(glm::vec3(-90, 0, 0), 2);
+    clip1->AddRotationKeyFrame(glm::vec3(-45, 0, 0), 3);
+    clip1->AddRotationKeyFrame(glm::vec3(0, 0, 0), 5);
+
+    clip1->AddColoreKeyFrame(glm::vec3(1, 0, 0), 0, EasingType::sineEaseIn);
 
 
 
+    Model* asteroid = new Model("Models/Asteroids/Asteroid_3.ply");
 
-    AnimationSequence* anim1 = new AnimationSequence();
+    asteroid->name = "ASTEROID";
+    asteroid->entityID = "ASTEROID_1";
 
-    anim1->AddAnimationClip(spaceShipAnimation, SpaceShip);
-  
-    AnimationSequence* anim2 = new AnimationSequence();
+    asteroid->transform.SetPosition(glm::vec3(15, 0, 0));
+    asteroid->transform.SetScale(glm::vec3(0.018f));
+
+    render.AddModelAndShader(asteroid, defaultShader);
+
+    Animation* clip2 = new Animation();
+
+    clip2->AddPositionKeyFrame(glm::vec3(15, 0, 0), 0);
+    clip2->AddPositionKeyFrame(glm::vec3(10, 0, 0), 1);
+    clip2->AddPositionKeyFrame(glm::vec3(5, 0, 0), 2);
+    clip2->AddPositionKeyFrame(glm::vec3(0, 0, 0), 3);
+    clip2->AddPositionKeyFrame(glm::vec3(-15, 0, 0), 5);
+    clip2->AddPositionKeyFrame(glm::vec3(-50, 0, 0), 6);
+
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,0 ), 0);
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,90), 2);
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,180), 3);
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,270), 5);
+    clip2->AddRotationKeyFrame(glm::vec3(0, 0,360), 6);
 
 
- 
-    AnimationSystem::GetInstance().SetSequence(anim1);
+    Model* asteroidGroups = new Model("Models/Asteroids/AsteroidGroup.ply");
+
+    asteroidGroups->name = "ASTEROID GROUPS";
+    asteroidGroups->entityID = "ASTEROID_GROUP_1";
+
+    asteroidGroups->transform.SetPosition(glm::vec3(-20, -3, 15));
+    asteroidGroups->transform.SetRotation(glm::vec3(0, 90, 0));
+
+    asteroidGroups->transform.SetScale(glm::vec3(0.0025f));
+
+    render.AddModelAndShader(asteroidGroups, defaultShader);
+
+
+
+
+    Animation* clip3 = new Animation();
+
+    clip3->AddPositionKeyFrame(glm::vec3(-20, -3, 15), 0, EasingType::sineEaseOut);
+    clip3->AddPositionKeyFrame(glm::vec3(25, -3, 15), 6, EasingType::sineEaseOut);
+
+    clip3->AddColoreKeyFrame(glm::vec3(1, 1, 0), 0);
+
+
+
+
+#pragma endregion
+
+
+    AnimationSequence* sequence1 = new AnimationSequence();
+    sequence1->AddAnimationClip(clip1, SpaceShip);
+    sequence1->AddAnimationClip(clip2, asteroid);
+    sequence1->AddAnimationClip(clip3, asteroidGroups);
+
+    AnimationSystem::GetInstance().SetSequence(sequence1);
 
 
 

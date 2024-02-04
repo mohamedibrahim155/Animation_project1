@@ -613,7 +613,7 @@ void AnimationSequence::ResetPositions()
 			if (!eventKeyFrames.empty())
 			{
 				EventKeyFrame event = eventKeyFrames[eventKeyFrames.size() - 1];
-				if (event.callBack != nullptr)
+				if (event.isEventTriggered)
 				{
 					event.isEventTriggered = false;
 				}
