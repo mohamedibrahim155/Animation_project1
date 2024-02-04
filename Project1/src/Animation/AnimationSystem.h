@@ -19,6 +19,7 @@ public :
 	void SetSequence(AnimationSequence* sequence);
 	void SetAnimationSpeed(int speed);
 	void NextSequence();
+	void PreviousSequence();
 
 	void SequenceStart();
 

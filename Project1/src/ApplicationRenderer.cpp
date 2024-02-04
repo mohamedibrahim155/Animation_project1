@@ -303,9 +303,9 @@ void ApplicationRenderer::Start()
      anim1->AddAnimationClip(DirectionAnimation, dir);
    //  anim1->AddAnimationClip(dir->animation, dir);
    //  anim1->AddAnimationClip(SecondModel->animation, SecondModel);
- //    AnimationSequence* anim2 = new AnimationSequence();
+     AnimationSequence* anim2 = new AnimationSequence();
 
-     anim1->AddAnimationClip(secondModelAnimation, SecondModel);
+     anim2->AddAnimationClip(secondModelAnimation, SecondModel);
 
    //  AnimationSystem::GetInstance().AddAnimationSequence(anim1);
   //   AnimationSystem::GetInstance().AddAnimationSequence(anim2);
@@ -550,6 +550,11 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
          {
              AnimationSystem::GetInstance().NextSequence();
+
+         }
+         if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+         {
+             AnimationSystem::GetInstance().PreviousSequence();
 
          }
  }

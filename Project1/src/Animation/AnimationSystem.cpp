@@ -84,3 +84,24 @@ void AnimationSystem::NextSequence()
 
 }
 
+void AnimationSystem::PreviousSequence()
+{
+	currentSequenceIndex--;
+
+	currentSequence->ResetTime();
+
+	currentSequence->ResetPositions();
+
+	currentSequence->SetVisibilityRenderers(false);
+
+	if (currentSequenceIndex < 0)
+	{
+		currentSequenceIndex =0;
+	}
+
+	SetSequence(animationSequences[currentSequenceIndex]);
+
+	currentSequence->SetVisibilityRenderers(true);
+
+}
+

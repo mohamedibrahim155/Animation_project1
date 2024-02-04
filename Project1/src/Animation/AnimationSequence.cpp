@@ -466,7 +466,7 @@ void AnimationSequence::ResetTime()
 		break;
 	case REWIND:
 		currentTime = sequenceTotalTime;
-	//	SequenceMode = NORMAL;
+	
 		break;
 	}
 
@@ -548,17 +548,17 @@ void AnimationSequence::ResetPositions()
 			const std::vector<ColorKeyFrame>& colorKeyFrames = animation.colorKeyFrameList;
 
 			if (!posKeyFrames.empty())
-				transform.SetPosition(posKeyFrames[0].position);
+				transform.SetPosition(posKeyFrames[posKeyFrames.size()-1].position);
 
 			if (!rotKeyFrames.empty())
-				transform.SetQuatRotation(rotKeyFrames[0].rotation);
+				transform.SetQuatRotation(rotKeyFrames[rotKeyFrames.size() - 1].rotation);
 
 			if (!scaleKeyFrames.empty())
-				transform.SetScale(scaleKeyFrames[0].scale);
+				transform.SetScale(scaleKeyFrames[scaleKeyFrames.size() - 1].scale);
 
 			if (!colorKeyFrames.empty())
 			{
-				const glm::vec3& color = colorKeyFrames[0].color;
+				const glm::vec3& color = colorKeyFrames[colorKeyFrames.size() - 1].color;
 				animationObject.first->meshes[0]->meshMaterial->material()->
 					SetBaseColor(glm::vec4(color, 1));
 			}
